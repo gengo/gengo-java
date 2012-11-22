@@ -27,8 +27,8 @@ import com.gengo.client.payloads.Payloads;
  */
 public class GengoClient extends JsonHttpApi
 {
-    private static final String STANDARD_BASE_URL = "http://api.gengo.com/v1.1/";
-    private static final String SANDBOX_BASE_URL = "http://api.sandbox.gengo.com/v1.1/";
+    private static final String STANDARD_BASE_URL = "http://api.gengo.com/v2/";
+    private static final String SANDBOX_BASE_URL = "http://api.sandbox.gengo.com/v2/";
 
     /** Strings used to represent TRUE and FALSE in requests */
     public static final String MYGENGO_TRUE = "1";
