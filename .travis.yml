@@ -1,0 +1,5 @@
+language: java
+env:
+  global:
+    - secure: "GdN7EFZNF0HbqEyfUHMctP74S26CisXr5yrGMmbjbkuEYw1xAwwwoEQl5Pcc\nqI1uMbQTT2P3I64dIZCwOm4ZMbbuPdijBk1tickwshs+Vcv8erKn261xFg3J\nAX9FkrZCtzGjBJ/Nx/gmMDPmAMxIu1jZtqgUw1Lrqrunn1qqg2M="
+    - GENGO_PUBKEY='pubkeyfortests'
