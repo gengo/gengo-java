@@ -592,6 +592,21 @@ public class GengoClient extends JsonHttpApi
     }
 
     /**
+     * Get translation jobs which were previously submitted together by their order id.
+     *
+     * @param orderId
+     * @return the response from the server
+     * @throws GengoException
+     */
+    public JSONObject getOrderJobs(int orderId) throws GengoException
+    {
+        String url = baseUrl + "translate/order/";
+        url += orderId;
+        return call(url, HttpMethod.GET);
+    }
+
+
+    /**
      * Utility function.
      */
     private String join(Iterable<? extends Object> pColl, String separator)
