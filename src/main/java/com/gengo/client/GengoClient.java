@@ -27,8 +27,8 @@ import com.gengo.client.payloads.Payloads;
  */
 public class GengoClient extends JsonHttpApi
 {
-    private static final String STANDARD_BASE_URL = "http://api.gengo.com/v1.1/";
-    private static final String SANDBOX_BASE_URL = "http://api.sandbox.gengo.com/v1.1/";
+    private static final String STANDARD_BASE_URL = "http://api.gengo.com/v2/";
+    private static final String SANDBOX_BASE_URL = "http://api.sandbox.gengo.com/v2/";
 
     /** Strings used to represent TRUE and FALSE in requests */
     public static final String MYGENGO_TRUE = "1";
@@ -590,6 +590,21 @@ public class GengoClient extends JsonHttpApi
         List<JobUpdate> p = (List)approvals;
         return updateTranslationJobs("approve", p);
     }
+
+    /**
+     * Get translation jobs which were previously submitted together by their order id.
+     *
+     * @param orderId
+     * @return the response from the server
+     * @throws GengoException
+     */
+    public JSONObject getOrderJobs(int orderId) throws GengoException
+    {
+        String url = baseUrl + "translate/order/";
+        url += orderId;
+        return call(url, HttpMethod.GET);
+    }
+
 
     /**
      * Utility function.
