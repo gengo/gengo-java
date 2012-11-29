@@ -1,27 +1,23 @@
 [![Build Status](https://secure.travis-ci.org/gengo/gengo-java.png?branch=master)](https://travis-ci.org/gengo/gengo-java)
 
-Gengo Java Library (for the [Gengo API](http://gengo.com/))
-==========================================================================================================================
-Translating your tools and products helps people all over the world access them; this is, of course, a
-somewhat tricky problem to solve. **[Gengo](http://gengo.com/)** is a service that offers human-translation
-(which is often a higher quality than machine translation), and an API to manage sending in work and watching
-jobs. This is a Java interface to make using the API simpler (some would say incredibly easy).
+Gengo Java Library (for the [Gengo API](http://gengo.com/api/))
+======================================================================================================================================================
+Translating your tools and products helps people all over the world access them; this is, of course, a somewhat tricky problem to solve.
+**[Gengo](http://gengo.com/)** is a service that offers human-translation (which is often a higher quality than machine translation), and an API to
+manage sending in work and watching jobs. This is a Java interface to make using the API simpler (some would say incredibly easy).
 
 
 Building
----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Ant
----
-Simply run `ant` from the base directory after checking out. This will download dependencies, compile classes and package the
-library in `lib/gengo.jar`. Add this jar file to your classpath to start working with the library.
+### Ant
+Simply run `ant` from the base directory after checking out. This will download dependencies, compile classes and package the library in
+`lib/gengo.jar`. Add this jar file to your classpath to start working with the library.
 
-Maven
------
+### Maven
 Run `mvn package` from the base directory. Package is built into the `target` directory.
 
-Eclipse
--------
+### Eclipse
 Quick start:
 * Checkout code from github
 * File menu > New Java Project
@@ -33,16 +29,15 @@ Quick start:
 * Build!
 
 
-
 Dependencies
----------------------------------------------------------------------------------------------------------------------------
-The **[JSON in Java](http://json.org/java/)** package by Douglas Crockford.
+------------------------------------------------------------------------------------------------------------------------------------------------------
+The [JSON in Java](http://json.org/java/) package by Douglas Crockford.
 
 
 Example Code
----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
 
-``` java  
+```java
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,18 +55,24 @@ public class ShortExample
         JSONObject response = Gengo.postTranslationJob(job);
     }
 }
-
 ```
 
+
 Question, Comments, Complaints, Praise?
----------------------------------------------------------------------------------------------------------------------------
-If you have questions or comments and would like to reach us directly, please feel free to do
-so at the following outlets. We love hearing from developers!
+------------------------------------------------------------------------------------------------------------------------------------------------------
+If you have questions or comments and would like to reach us directly, please feel free to do so at the following outlets. We love hearing from
+developers!
 
-Email: shawn.smith [at] gengo dot com
-Twitter: **[@gengoit](http://twitter.com/gengoit)**
+* Email: shawn.smith [at] gengo dot com
+* Twitter: [@gengoit](https://twitter.com/gengoit)
+* IRC: [#gengo](irc://irc.freenode.net/gengo)
 
-If you come across any issues, please file them on the **[Github project issue tracker](https://github.com/gengo/gengo-java/issues)**. Thanks!
+If you come across any issues, please file them on the [Github project issue tracker](https://github.com/gengo/gengo-java/issues). Thanks!
+
+
+Documentation
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Check out the full [Gengo API documentation](http://developers.gengo.com).
 
 
 Credits & License
