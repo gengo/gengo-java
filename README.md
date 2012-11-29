@@ -63,7 +63,7 @@ Question, Comments, Complaints, Praise?
 If you have questions or comments and would like to reach us directly, please feel free to do so at the following outlets. We love hearing from
 developers!
 
-* Email: shawn.smith [at] gengo dot com
+* Email: api [at] gengo dot com
 * Twitter: [@gengoit](https://twitter.com/gengoit)
 * IRC: [#gengo](irc://irc.freenode.net/gengo)
 
