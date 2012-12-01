@@ -308,7 +308,6 @@ public class JsonHttpApi
                 for (Map.Entry<String, String> param : parameters.entrySet()) {
                     writer.append("--" + boundary).append(CRLF);
                     writer.append(String.format("Content-Disposition: form-data; name=\"%s\"", param.getKey())).append(CRLF);
-                    //writer.append("Content-Type: text/plain; charset=" + charset).append(CRLF);
                     writer.append("Content-Type: text/plain").append(CRLF);
                     writer.append(CRLF);
                     writer.append(param.getValue()).append(CRLF).flush();
