@@ -339,7 +339,7 @@ public class JsonHttpApi
                         if (input != null) try {
                             input.close();
                         } catch (IOException e) {
-                            throw new GengoException(e);
+                            throw e;
                         }
                     }
                     writer.append(CRLF).flush(); // CRLF is important! It indicates end of binary boundary.
