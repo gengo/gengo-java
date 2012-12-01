@@ -6,11 +6,15 @@ import java.lang.Thread;
 import java.lang.InterruptedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.gengo.client.GengoClient;
 import com.gengo.client.exceptions.GengoException;
 import com.gengo.client.payloads.TranslationJob;
+import com.gengo.client.payloads.FileJob;
 import com.gengo.client.enums.Tier;
+import com.gengo.client.payloads.Payloads;
 
 import org.json.JSONObject;
 import org.json.JSONException;
@@ -56,5 +60,21 @@ public class JobsTest {
         JSONObject getJobResponse = getJobResp.getJSONObject("response");
         String bodySrc = getJobResponse.getJSONObject("job").getString("body_src");
         Assert.assertEquals(bodySrc, "This is a short story.");
+    }
+
+    @Test
+    public void testPostJobsFiles() throws GengoException, JSONException, InterruptedException {
+        GengoClient Gengo = new GengoClient(this.public_key, this.private_key, true);
+        Map<String, String> filePaths = new HashMap<String, String>();
+        FileJob job1 = new FileJob("someslug", "file_job_1", "en", "ja", Tier.STANDARD);
+        FileJob job2 = new FileJob("someslug2", "file_job_2", "en", "ja", Tier.STANDARD);
+        filePaths.put("file_job_1", "examples/testfiles/test_file1.txt");
+        filePaths.put("file_job_2", "examples/testfiles/test_file2.txt");
+        List<FileJob> jobList = new ArrayList<FileJob>();
+        jobList.add(job1);
+        jobList.add(job2);
+        JSONObject rsp = Gengo.determineTranslationCostFiles(jobList, filePaths);
+        Assert.assertEquals(rsp.getString("opstat"), "ok");
+        Assert.assertTrue(rsp.has("response"));
     }
 }

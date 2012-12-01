@@ -4,9 +4,14 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -265,6 +270,117 @@ public class JsonHttpApi
             }
             return buf.toString();
         }
+        catch (Exception e)
+        {
+            throw new GengoException("HTTP POST failed", e);
+        }
+    }
+
+    /**
+     * Perform an HTTP POST for file upload
+     * @param url the URL to POST to
+     * @param data the jobs payloads JSONObject
+     * @param filePaths a map of file keys to file paths
+     * @return The response from the server
+     * @throws GengoException if something went wrong :(
+     */
+    protected JSONObject httpPostFileUpload(String url, JSONObject data, Map<String, String> filePaths) throws GengoException
+    {
+        try {
+            String charset = "UTF-8";
+            HttpURLConnection con = createHttpConnection(HttpMethod.POST, url, null);
+            con.setDoOutput(true);
+            String boundary = Long.toHexString(System.currentTimeMillis()); // Just generate some unique random value.
+            String CRLF = "\r\n"; // Line separator required by multipart/form-data.
+            con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+            Map<String, String> parameters = new HashMap<String, String>();
+            parameters.put("api_key", this.publicKey);
+            parameters.put("ts", getTimestamp());
+            parameters.put("api_sig", hmac(parameters.get("ts")));
+            PrintWriter writer = null;
+            try
+            {
+                OutputStream output = con.getOutputStream();
+                writer = new PrintWriter(new OutputStreamWriter(output, charset), true); // true = autoFlush, important!
+
+                // Send normal params.
+                for (Map.Entry<String, String> param : parameters.entrySet()) {
+                    writer.append("--" + boundary).append(CRLF);
+                    writer.append(String.format("Content-Disposition: form-data; name=\"%s\"", param.getKey())).append(CRLF);
+                    writer.append("Content-Type: text/plain").append(CRLF);
+                    writer.append(CRLF);
+                    writer.append(param.getValue()).append(CRLF).flush();
+                }
+
+                writer.append("--" + boundary).append(CRLF);
+                writer.append("Content-Disposition: form-data; name=\"data\"").append(CRLF);
+                writer.append("Content-Type: text/plain").append(CRLF);
+                writer.append(CRLF);
+                writer.append(data.toString()).append(CRLF).flush();
+
+                // Send files.
+                for (Map.Entry<String, String> file : filePaths.entrySet()) {
+                    File binaryFile = new File(file.getValue());
+                    writer.append("--" + boundary).append(CRLF);
+                    writer.append(String.format("Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"", file.getKey(), file.getValue())).append(CRLF);
+                    writer.append("Content-Type: " + HttpURLConnection.guessContentTypeFromName(binaryFile.getName())).append(CRLF);
+                    writer.append(CRLF).flush();
+                    InputStream input = null;
+                    try {
+                        input = new FileInputStream(binaryFile);
+                        byte[] buffer = new byte[1024];
+                        for (int length = 0; (length = input.read(buffer)) > 0;) {
+                            output.write(buffer, 0, length);
+                        }
+                        output.flush(); // Important! Output cannot be closed. Close of writer will close output as well.
+                    } finally {
+                        if (input != null) try {
+                            input.close();
+                        } catch (IOException e) {
+                            throw e;
+                        }
+                    }
+                    writer.append(CRLF).flush(); // CRLF is important! It indicates end of binary boundary.
+                }
+
+                // End of multipart/form-data.
+                writer.append("--" + boundary + "--").append(CRLF);
+                } finally {
+                    if (writer != null) {
+                        writer.close();
+                    }
+                }
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), Charset.forName("UTF-8")));
+                String line;
+                StringBuffer buf = new StringBuffer();
+                while (null != (line = reader.readLine()))
+                {
+                    buf.append(line);
+                }
+                if (HttpURLConnection.HTTP_OK != con.getResponseCode()
+                    && HttpURLConnection.HTTP_CREATED != con.getResponseCode())
+                {
+                    throw new GengoException(String.format("Unexpected HTTP response: %d", con.getResponseCode()));
+                }
+                JSONObject doc;
+                String rsp = buf.toString();
+                try
+                {
+                    doc = new JSONObject(rsp);
+                    if ("error".equals(doc.getString("opstat")))
+                    {
+                        JSONObject error = doc.getJSONObject("err");
+                        throw new ErrorResponseException(error.getString("msg"), error.getInt("code"));
+                    }
+                }
+                catch (JSONException e)
+                {
+                    throw new GengoException("The response from the server is not valid JSON: " + rsp, e);
+                }
+                return doc;
+            }
         catch (Exception e)
         {
             throw new GengoException("HTTP POST failed", e);

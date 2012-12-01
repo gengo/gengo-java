@@ -3,6 +3,7 @@ package com.gengo.client;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +14,7 @@ import com.gengo.client.enums.Rating;
 import com.gengo.client.enums.RejectReason;
 import com.gengo.client.exceptions.GengoException;
 import com.gengo.client.payloads.Approval;
+import com.gengo.client.payloads.FileJob;
 import com.gengo.client.payloads.JobUpdate;
 import com.gengo.client.payloads.Payload;
 import com.gengo.client.payloads.Rejection;
@@ -605,6 +607,32 @@ public class GengoClient extends JsonHttpApi
         return call(url, HttpMethod.GET);
     }
 
+    /**
+     * Get a quote for file jobs.
+     * @param jobs Translation job objects to be quoted
+     * @param filePaths map of file keys to filesystem paths
+     * @return the response from the server
+     * @throws GengoException
+     */
+    public JSONObject determineTranslationCostFiles(List<FileJob> jobs, Map<String, String> filePaths) throws GengoException
+    {
+        try
+        {
+            JSONObject theJobs = new JSONObject();
+
+            for (int i = 0; i < jobs.size(); i++) {
+                theJobs.put(String.format("job_%s", i), jobs.get(i).toJSONObject());
+            }
+            String url = baseUrl + "translate/service/quote/file";
+            JSONObject data = new JSONObject();
+            data.put("jobs", theJobs);
+
+            return httpPostFileUpload(url, data, filePaths);
+        } catch (JSONException x)
+        {
+            throw new GengoException(x.getMessage(), x);
+        }
+    }
 
     /**
      * Utility function.
