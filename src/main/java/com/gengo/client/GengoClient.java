@@ -109,27 +109,6 @@ public class GengoClient extends JsonHttpApi
     }
 
     /**
-     * Submit a job for translation.
-     * @param job a job payload object
-     * @return the response from the server
-     * @throws GengoException
-     */
-    public JSONObject postTranslationJob(TranslationJob job)
-            throws GengoException
-    {
-        try
-        {
-            String url = baseUrl + "translate/job";
-            JSONObject data = new JSONObject();
-            data.put("job", job.toJSONObject());
-            return call(url, HttpMethod.POST, data);
-        } catch (JSONException x)
-        {
-            throw new GengoException(x.getMessage(), x);
-        }
-    }
-
-    /**
      * Submit multiple jobs for translation.
      * @param jobs TranslationJob payload objects
      * @param processAsGroup true iff the jobs should be processed as a group
