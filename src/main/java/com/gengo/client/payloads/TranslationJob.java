@@ -31,6 +31,9 @@ public class TranslationJob extends Payload
 	private String callbackUrl;
 	private boolean autoApprove;
 	private String customData;	
+	private String position;
+	private String glossaryId;
+	private String maxChar;
 	
 	/**
 	 * Create a translation job.
@@ -142,6 +145,30 @@ public class TranslationJob extends Payload
 		}
 		customData = new String(data);
 	}
+	public String getPosition()
+	{
+		return position;
+	}
+	public void setPosition(String position)
+	{
+		this.position = position;
+	}
+	public String getGlossaryId()
+	{
+		return glossaryId;
+	}
+	public void setGlossaryId(String glossaryId)
+	{
+		this.glossaryId = glossaryId;
+	}
+	public String getMaxChar()
+	{
+		return maxChar;
+	}
+	public void setMaxChar(String maxChar)
+	{
+		this.maxChar = maxChar;
+	}
 
 	/** Utility method */
 	private boolean isNullOrEmpty(String str)
@@ -192,6 +219,18 @@ public class TranslationJob extends Payload
 			if (null != this.customData && this.customData.length() > 0)
 			{
 				job.put("custom_data", this.customData);
+			}
+			if (!isNullOrEmpty(this.position))
+			{
+				job.put("position", this.position);
+			}
+			if (!isNullOrEmpty(this.glossaryId))
+			{
+				job.put("glossary_id", this.glossaryId);
+			}
+			if (!isNullOrEmpty(this.maxChar))
+			{
+				job.put("max_char", this.maxChar);
 			}
 		}
 		catch (JSONException e)
