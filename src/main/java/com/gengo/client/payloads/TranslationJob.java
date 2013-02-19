@@ -33,6 +33,7 @@ public class TranslationJob extends Payload
 	private String customData;	
 	private String position;
 	private String glossaryId;
+	private String maxChar;
 	
 	/**
 	 * Create a translation job.
@@ -160,6 +161,14 @@ public class TranslationJob extends Payload
 	{
 		this.glossaryId = glossaryId;
 	}
+	public String getMaxChar()
+	{
+		return maxChar;
+	}
+	public void setMaxChar(String maxChar)
+	{
+		this.maxChar = maxChar;
+	}
 
 	/** Utility method */
 	private boolean isNullOrEmpty(String str)
@@ -218,6 +227,10 @@ public class TranslationJob extends Payload
 			if (!isNullOrEmpty(this.glossaryId))
 			{
 				job.put("glossary_id", this.glossaryId);
+			}
+			if (!isNullOrEmpty(this.maxChar))
+			{
+				job.put("max_char", this.maxChar);
 			}
 		}
 		catch (JSONException e)
