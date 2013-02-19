@@ -33,7 +33,7 @@ public class TranslationJob extends Payload
 	private String customData;	
 	
 	/**
-	 * Create a translation job with a slug string.
+	 * Create a translation job.
 	 * @param slug short string to summarize this job
 	 * @param textToTranslate text to be translated
 	 * @param sourceLanguageCode source language code
@@ -49,18 +49,6 @@ public class TranslationJob extends Payload
 		this.tier = tier;
 	}
 
-    /**
-     * Create a translation job with no slug string.
-     * @param textToTranslate text to be translated
-     * @param sourceLanguageCode source language code
-     * @param targetLanguageCode target language code
-     * @param tier translation tier
-     */	
-	public TranslationJob(String textToTranslate, String sourceLanguageCode, String targetLanguageCode, Tier tier)
-    {
-        this("0", textToTranslate, sourceLanguageCode, targetLanguageCode, tier);
-    }
-	
 	/* Getters and setters */
 	public String getSlug()
 	{
