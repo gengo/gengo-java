@@ -139,20 +139,6 @@ public class GengoClient extends JsonHttpApi
     public JSONObject postTranslationJobs(List<TranslationJob> jobs, boolean processAsGroup)
     throws GengoException
     {
-        return postTranslationJobs(jobs, processAsGroup, false);
-    }
-
-    /**
-     * Submit multiple jobs for translation.
-     * @param jobs TranslationJob payload objects
-     * @param processAsGroup true iff the jobs should be processed as a group
-     * @param fixBadResponse true iff malformed job responses should be fixed
-     * @return the response from the server
-     * @throws GengoException
-     */
-    public JSONObject postTranslationJobs(List<TranslationJob> jobs, boolean processAsGroup, boolean fixBadResponse)
-    throws GengoException
-    {
         try
         {
             String url = baseUrl + "translate/jobs";
@@ -163,39 +149,12 @@ public class GengoClient extends JsonHttpApi
             data.put("jobs", (new Payloads(p)).toJSONArray());
             data.put("as_group", processAsGroup ? MYGENGO_TRUE : MYGENGO_FALSE);
             JSONObject rsp = call(url, HttpMethod.POST, data);
-            return fixBadResponse ? fixBadPostJobsResponse(rsp) : rsp;
+            return rsp;
         }
         catch (JSONException x)
         {
             throw new GengoException(x.getMessage(), x);
         }
-    }
-
-    /* Temporary workaround for a server side issue with this API method */
-    private JSONObject fixBadPostJobsResponse(JSONObject rsp)
-    {
-        try
-        {
-            if ("ok".equals(rsp.getString("opstat")))
-            {
-                JSONObject innerRsp = rsp.getJSONObject("response");
-                JSONArray jobs = innerRsp.getJSONArray("jobs");
-                if (jobs.length() > 0)
-                {
-                    JSONObject first = jobs.getJSONArray(0).getJSONObject(0);
-                    JSONObject newFirst = new JSONObject();
-                    newFirst.put("0", first);
-                    jobs.put(0, newFirst);
-                    innerRsp.put("jobs", jobs);
-                    rsp.put("response", innerRsp);
-                }
-            }
-        }
-        catch (JSONException e)
-        {
-            // not a response we can or need to fix
-        }
-        return rsp;
     }
 
     /**
