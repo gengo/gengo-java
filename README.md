@@ -52,7 +52,7 @@ public class ShortExample
     {
         GengoClient Gengo = new GengoClient(ApiKeys.PUBLIC_KEY, ApiKeys.PRIVATE_KEY, true);
         List<TranslationJob> jobList = new ArrayList<TranslationJob>();
-        jobList.add(new TranslationJob("test_job_slug", "This is a short test job","en","es",Tier.STANDARD));
+        jobList.add(new TranslationJob("test_job_slug", "This is a short test job", "en", "es", Tier.STANDARD));
         JSONObject response = Gengo.postTranslationJobs(jobList, true);
     }
 }
