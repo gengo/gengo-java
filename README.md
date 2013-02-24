@@ -51,8 +51,9 @@ public class ShortExample
     private void ShortExample() throws GengoException, JSONException
     {
         GengoClient Gengo = new GengoClient(ApiKeys.PUBLIC_KEY, ApiKeys.PRIVATE_KEY, true);
-        TranslationJob job = new TranslationJob("Stub", "Here's a job", "en", "es", Tier.STANDARD);
-        JSONObject response = Gengo.postTranslationJob(job);
+        List<TranslationJob> jobList = new ArrayList<TranslationJob>();
+        jobList.add(new TranslationJob("test_job_slug", "This is a short test job", "en", "es", Tier.STANDARD));
+        JSONObject response = Gengo.postTranslationJobs(jobList, true);
     }
 }
 ```

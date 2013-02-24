@@ -18,8 +18,8 @@ public class postTranslationJobs
     {
         GengoClient Gengo = new GengoClient(ApiKeys.PUBLIC_KEY, ApiKeys.PRIVATE_KEY, true);
         List<TranslationJob> jobList = new ArrayList<TranslationJob>();
-        jobList.add(new TranslationJob("short story title", "This is a short story.","en","es",Tier.STANDARD));
-        jobList.add(new TranslationJob("short story body", "There once was a man from Nantucket.","en","es",Tier.STANDARD));
+        jobList.add(new TranslationJob("short story title", "This is a short story.", "en", "es", Tier.STANDARD));
+        jobList.add(new TranslationJob("short story body", "There once was a man from Nantucket.", "en", "es", Tier.STANDARD));
         JSONObject response = Gengo.postTranslationJobs(jobList, true);
     }
 
