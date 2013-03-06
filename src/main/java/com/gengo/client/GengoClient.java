@@ -15,7 +15,6 @@ import com.gengo.client.enums.RejectReason;
 import com.gengo.client.exceptions.GengoException;
 import com.gengo.client.payloads.Approval;
 import com.gengo.client.payloads.FileJob;
-import com.gengo.client.payloads.JobUpdate;
 import com.gengo.client.payloads.Payload;
 import com.gengo.client.payloads.Rejection;
 import com.gengo.client.payloads.Revision;
@@ -178,15 +177,27 @@ public class GengoClient extends JsonHttpApi
             String url = baseUrl + "translate/job/" + id;
             JSONObject data = new JSONObject();
             data.put("action", "approve");
-            data.put("for_translator", commentsForTranslator);
-            data.put("for_gengo", commentsForGengo);
+            if (commentsForTranslator != null) {
+                data.put("for_translator", commentsForTranslator);
+            }
+            if (commentsForGengo != null) {
+                data.put("for_gengo", commentsForGengo);
+            }
+            if (rating != null) {
+                data.put("rating", rating.toString());
+            }
             data.put("public", feedbackIsPublic ? MYGENGO_TRUE : MYGENGO_FALSE);
-            data.put("rating", rating.toString());
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException x)
         {
             throw new GengoException(x.getMessage(), x);
         }
+    }
+
+    public JSONObject approveTranslationJob(int id, Rating rating,
+            String commentsForTranslator, String commentsForGengo) throws GengoException
+    {
+        return approveTranslationJob(id, rating, commentsForTranslator, commentsForGengo, false);
     }
 
     /**
@@ -448,87 +459,6 @@ public class GengoClient extends JsonHttpApi
         {
             throw new GengoException(x.getMessage(), x);
         }
-    }
-
-    /**
-     * Update translation jobs
-     * @param action the update action to apply
-     * @param approvals the job payload objects
-     * @return the response from the server
-     * @throws GengoException
-     */
-    private JSONObject updateTranslationJobs(String action, List<JobUpdate> updates) throws GengoException
-    {
-        try
-        {
-            String url = baseUrl + "translate/jobs";
-            JSONObject data = new JSONObject();
-            data.put("action", action);
-            String fieldName = null;
-            for (JobUpdate u : updates)
-            {
-                String g = u.isIdentifiedByJobId() ? "job_ids" : "jobs";
-                if (null != fieldName && !fieldName.equals(g))
-                {
-                    throw new GengoException("All updates in list must be identified in the same way: either by job_id, or by (lc_src, lc_tgt, body_src, tier)");
-                }
-                else
-                {
-                    fieldName = g;
-                }
-            }
-            /* We can safely cast into a list of the payload base type */
-            @SuppressWarnings({ "rawtypes", "unchecked" })
-            List<Payload> p = (List)updates;
-            data.put(fieldName, (new Payloads(p)).toJSONArray());
-            return call(url, HttpMethod.PUT, data);
-        }
-        catch (JSONException x)
-        {
-            throw new GengoException(x.getMessage(), x);
-        }
-    }
-
-    /**
-     * Revise translations.
-     * @param revisions Revision payload objects
-     * @return the response from the server
-     * @throws GengoException
-     */
-    public JSONObject reviseTranslationJobs(List<Revision> revisions) throws GengoException
-    {
-        /* We can safely cast our list of revisions into a list of the payload base type */
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        List<JobUpdate> p = (List)revisions;
-        return updateTranslationJobs("revise", p);
-    }
-
-    /**
-     * Reject translations.
-     * @param rejections Rejection payload objects
-     * @return the response from the server
-     * @throws GengoException
-     */
-    public JSONObject rejectTranslationJobs(List<Rejection> rejections) throws GengoException
-    {
-        /* We can safely cast our list of rejections into a list of the payload base type */
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        List<JobUpdate> p = (List)rejections;
-        return updateTranslationJobs("reject", p);
-    }
-
-    /**
-     * Approve translations.
-     * @param approvals Approval payload objects
-     * @return the response from the server
-     * @throws GengoException
-     */
-    public JSONObject approveTranslationJobs(List<Approval> approvals) throws GengoException
-    {
-        /* We can safely cast our list of approvals into a list of the payload base type */
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        List<JobUpdate> p = (List)approvals;
-        return updateTranslationJobs("approve", p);
     }
 
     /**
