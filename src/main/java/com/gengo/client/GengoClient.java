@@ -15,7 +15,6 @@ import com.gengo.client.enums.RejectReason;
 import com.gengo.client.exceptions.GengoException;
 import com.gengo.client.payloads.Approval;
 import com.gengo.client.payloads.FileJob;
-import com.gengo.client.payloads.JobUpdate;
 import com.gengo.client.payloads.Payload;
 import com.gengo.client.payloads.Rejection;
 import com.gengo.client.payloads.Revision;
@@ -178,15 +177,27 @@ public class GengoClient extends JsonHttpApi
             String url = baseUrl + "translate/job/" + id;
             JSONObject data = new JSONObject();
             data.put("action", "approve");
-            data.put("for_translator", commentsForTranslator);
-            data.put("for_gengo", commentsForGengo);
+            if (commentsForTranslator != null) {
+                data.put("for_translator", commentsForTranslator);
+            }
+            if (commentsForGengo != null) {
+                data.put("for_gengo", commentsForGengo);
+            }
+            if (rating != null) {
+                data.put("rating", rating.toString());
+            }
             data.put("public", feedbackIsPublic ? MYGENGO_TRUE : MYGENGO_FALSE);
-            data.put("rating", rating.toString());
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException x)
         {
             throw new GengoException(x.getMessage(), x);
         }
+    }
+
+    public JSONObject approveTranslationJob(int id, Rating rating,
+            String commentsForTranslator, String commentsForGengo) throws GengoException
+    {
+        return approveTranslationJob(id, rating, commentsForTranslator, commentsForGengo, false);
     }
 
     /**
