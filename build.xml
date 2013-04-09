@@ -1,39 +1,39 @@
 <project name="Gengo Java Library" default="jar">
-	
-	<property name="src.dir" value="."/>
-	<property name="bin.dir" value="bin"/>
-	<property name="lib.dir" value="lib"/>
-	
-	<property name="json_java.url" value="https://github.com/douglascrockford/JSON-java/zipball/master"/>
-	<property name="json_java.file" value="json_java.zip"/>
-	<property name="json_java.dir" value="org/json"/>
-	
-	<target name="get_json_java" description="Download and unzip JSON Java library">
-		<delete dir="${json_java.dir}"/>
-		<get src="${json_java.url}" dest="${json_java.file}"/>
-		<unzip src="${json_java.file}" dest="${json_java.dir}">
-			<patternset>
-				<exclude name="**/Test*.java"/>
-			</patternset>
-			<mapper type="flatten"/>
-		</unzip>
-		<delete file="${json_java.file}"/>
-	</target>
-	
-	<target name="build" depends="get_json_java" description="Build .class files">
-		<mkdir dir="${bin.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${bin.dir}" debug="on" excludes="examples/**,src/test/**" includeantruntime="false"/>
-	</target>
 
-	<target name="jar" depends="build" description="Create .jar file">
-		<jar destfile="${lib.dir}/gengo.jar" basedir="${bin.dir}"/>
-	</target>
-	
-	<target name="clean">
-		<delete dir="${bin.dir}"/>
-		<delete dir="${lib.dir}"/>
-		<delete dir="${json_java.dir}"/>
-		<delete dir="org"/>
-	</target>
-	
+    <property name="src.dir" value="."/>
+    <property name="bin.dir" value="bin"/>
+    <property name="lib.dir" value="lib"/>
+
+    <property name="json_java.url" value="https://github.com/douglascrockford/JSON-java/zipball/master"/>
+    <property name="json_java.file" value="json_java.zip"/>
+    <property name="json_java.dir" value="org/json"/>
+
+    <target name="get_json_java" description="Download and unzip JSON Java library">
+        <delete dir="${json_java.dir}"/>
+        <get src="${json_java.url}" dest="${json_java.file}"/>
+        <unzip src="${json_java.file}" dest="${json_java.dir}">
+            <patternset>
+                <exclude name="**/Test*.java"/>
+            </patternset>
+            <mapper type="flatten"/>
+        </unzip>
+        <delete file="${json_java.file}"/>
+    </target>
+
+    <target name="build" depends="get_json_java" description="Build .class files">
+        <mkdir dir="${bin.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${bin.dir}" debug="on" excludes="examples/**,src/test/**" includeantruntime="false"/>
+    </target>
+
+    <target name="jar" depends="build" description="Create .jar file">
+        <jar destfile="${lib.dir}/gengo.jar" basedir="${bin.dir}"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${bin.dir}"/>
+        <delete dir="${lib.dir}"/>
+        <delete dir="${json_java.dir}"/>
+        <delete dir="org"/>
+    </target>
+
 </project>
