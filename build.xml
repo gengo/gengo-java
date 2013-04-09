@@ -22,7 +22,7 @@
 	
 	<target name="build" depends="get_json_java" description="Build .class files">
 		<mkdir dir="${bin.dir}"/>
-		<javac srcdir="${src.dir}" destdir="${bin.dir}" debug="on" excludes="examples/**" includeantruntime="false"/>
+        <javac srcdir="${src.dir}" destdir="${bin.dir}" debug="on" excludes="examples/**,src/test/**" includeantruntime="false"/>
 	</target>
 
 	<target name="jar" depends="build" description="Create .jar file">
