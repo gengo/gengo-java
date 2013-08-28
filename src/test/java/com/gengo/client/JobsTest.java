@@ -48,7 +48,9 @@ public class JobsTest {
         String orderId = postResponse.getString("order_id");
 
         // GET order
-        Thread.sleep(3000);
+        // We have to sleep to give jobs processor some time to process the jobs,
+        // then the IDs should be in jobs_available
+        Thread.sleep(10000);
         JSONObject getOrderResp = Gengo.getOrderJobs(Integer.parseInt(orderId));
         // Make assertions on GET response
         Assert.assertEquals(getOrderResp.getString("opstat"), "ok");
