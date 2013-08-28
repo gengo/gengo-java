@@ -108,6 +108,17 @@ public class GengoClient extends JsonHttpApi
     }
 
     /**
+     * Get preferred translators in array by langs and tier
+     * @return the response from the server
+     * @throws GengoException
+     */
+    public JSONObject getAccountPreferredTranslators() throws GengoException
+    {
+        String url = baseUrl + "account/preferred_translators";
+        return call(url, HttpMethod.GET);
+    }
+
+    /**
      * Submit multiple jobs for translation.
      * @param jobs TranslationJob payload objects
      * @param processAsGroup true iff the jobs should be processed as a group

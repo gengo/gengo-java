@@ -32,4 +32,13 @@ public class AccountTest {
         Assert.assertEquals(response.get("opstat").toString(), "ok");
         Assert.assertTrue(response.has("response"));
     }
+
+    @Test
+    public void testGetAccountPreferredTranslators() throws GengoException, JSONException {
+
+        GengoClient Gengo = new GengoClient(this.public_key, this.private_key, true);
+        JSONObject response = Gengo.getAccountPreferredTranslators();
+        Assert.assertEquals(response.get("opstat").toString(), "ok");
+        Assert.assertTrue(response.has("response"));
+    }
 }
