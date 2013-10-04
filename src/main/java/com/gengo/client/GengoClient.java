@@ -278,19 +278,6 @@ public class GengoClient extends JsonHttpApi
     }
 
     /**
-     * Get translation jobs which were previously submitted as a group
-     * @param groupId The group job number for these jobs.
-     * @return the response from the server
-     * @throws GengoException
-     */
-    public JSONObject getGroupJobs(int groupId) throws GengoException
-    {
-        String url = baseUrl + "translate/jobs/group/";
-        url += groupId;
-        return call(url, HttpMethod.GET);
-    }
-
-    /**
      * Post a comment for a translation job
      * @param id the ID of the job to comment on
      * @param comment the comment
