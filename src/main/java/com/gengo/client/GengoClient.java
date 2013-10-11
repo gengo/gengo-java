@@ -352,18 +352,6 @@ public class GengoClient extends JsonHttpApi
     }
 
     /**
-     * Get the preview image for a translated job
-     * @param id the job ID
-     * @return the image from the server
-     * @throws GengoException
-     */
-    public BufferedImage getTranslationJobPreviewImage(int id) throws GengoException
-    {
-        String url = baseUrl + "translate/job/" + id + "/preview";
-        return getImage(url);
-    }
-
-    /**
      * Cancel a translation job. It can only be deleted if it has not been started by a translator.
      * @param id the job ID
      * @return the response from the server
