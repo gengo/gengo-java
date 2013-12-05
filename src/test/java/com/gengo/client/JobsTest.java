@@ -82,4 +82,13 @@ public class JobsTest {
         Assert.assertEquals(rsp.getString("opstat"), "ok");
         Assert.assertTrue(rsp.has("response"));
     }
+
+    @Test(expected=GengoException.class)
+    public void testPostTranslationJobs() throws GengoException, JSONException, InterruptedException {
+        GengoClient gengoClient = new GengoClient(this.public_key, this.private_key, true);
+        TranslationJob job = new TranslationJob("label_test", "Add Department", "af", "es", Tier.STANDARD);
+        List<TranslationJob> jobList = new ArrayList<TranslationJob>();
+        jobList.add(job);
+        JSONObject response = gengoClient.postTranslationJobs(jobList, false);
+    }
 }
