@@ -165,6 +165,10 @@ public class JsonHttpApi
             if ("error".equals(doc.getString("opstat")))
             {
                 JSONObject error = doc.getJSONObject("err");
+                if (!error.has("msg") && error.has("0"))
+                {
+                    error = error.getJSONArray("0").getJSONObject(0);
+                }
                 throw new ErrorResponseException(error.getString("msg"), error.getInt("code"));
             }
         }

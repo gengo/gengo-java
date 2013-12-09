@@ -134,7 +134,7 @@ public class GengoClient extends JsonHttpApi
             JSONObject data = new JSONObject();
             /* We can safely cast our list of jobs into a list of the payload base type */
             @SuppressWarnings({ "rawtypes", "unchecked" })
-            List<Payload> p = (List)jobs; 
+            List<Payload> p = (List)jobs;
             data.put("jobs", (new Payloads(p)).toJSONArray());
             data.put("as_group", processAsGroup ? MYGENGO_TRUE : MYGENGO_FALSE);
             JSONObject rsp = call(url, HttpMethod.POST, data);
