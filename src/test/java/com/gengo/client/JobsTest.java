@@ -85,12 +85,11 @@ public class JobsTest {
 
     @Test(expected=GengoException.class)
     public void testPostTranslationJobs() throws GengoException, JSONException, InterruptedException {
-        GengoClient gengoClient = new GengoClient(this.public_key, this.private_key, true);
-
+        GengoClient Gengo = new GengoClient(this.public_key, this.private_key, true);
         // there is no Afrikaans source language, so we expect this to raise an exception
         TranslationJob job = new TranslationJob("label_test", "'n Bietjie afrikaanse teks", "af", "es", Tier.STANDARD);
         List<TranslationJob> jobList = new ArrayList<TranslationJob>();
         jobList.add(job);
-        JSONObject response = gengoClient.postTranslationJobs(jobList, false);
+        JSONObject response = Gengo.postTranslationJobs(jobList, false);
     }
 }

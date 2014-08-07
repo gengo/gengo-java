@@ -36,7 +36,7 @@ public class ErrorResponseException extends GengoException
 	public static final int REVISION_ACCESS_UNAUTHORIZED = 2200;
 	public static final int JOB_NOT_REVIEWABLE = 2250;
 	public static final int JOB_CANNOT_BE_PURCHASED = 2251;
-	public static final int JOB_CANNOT_BE_CANCELLED = 2252; 
+	public static final int JOB_CANNOT_BE_CANCELLED = 2252;
 	public static final int COMMENT_REQUIRED = 2300;
 	public static final int REASON_REQUIRED = 2350;
 	public static final int CAPTCHA_REQUIRED = 2400;
@@ -49,15 +49,17 @@ public class ErrorResponseException extends GengoException
 	public static final int GROUP_ACCESS_UNAUTHORIZED = 2600;
 	public static final int JOB_STATUS_INVALID = 2650;
 	public static final int CREDITS_INSUFFICIENT = 2700;
-	
+    public static final int UNAUTHORIZED_ORDER_ACCESS = 2750;
+
+
 	private int code;
-	
+
 	public ErrorResponseException(String e, int code)
 	{
 		super(String.format("%d: %s", code, e));
 		this.code = code;
 	}
-	
+
 	/**
 	 * @return the error code returned by the server
 	 */
