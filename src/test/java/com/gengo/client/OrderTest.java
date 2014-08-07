@@ -11,6 +11,7 @@ import org.json.JSONException;
 import com.gengo.client.enums.Tier;
 import com.gengo.client.GengoClient;
 import com.gengo.client.payloads.TranslationJob;
+import com.gengo.client.exceptions.GengoException;
 import com.gengo.client.exceptions.ErrorResponseException;
 
 
@@ -20,11 +21,10 @@ public class OrderTest {
     private String private_key = System.getenv("GENGO_PRIVKEY");
 
     @Test
-    public void testGetOrder() throws ErrorResponseException, JSONException, InterruptedException {
+    public void testGetOrder() throws ErrorResponseException, GengoException, JSONException, InterruptedException {
 
+        // initialize client
         GengoClient Gengo = new GengoClient(this.public_key, this.private_key, true);
-        Gengo.setBaseUrl("http://api.gengo.dev/v2/");
-
         // post a job and retrive the order_id
         List<TranslationJob> jobList = new ArrayList<TranslationJob>();
         TranslationJob job = new TranslationJob("java client test", "This is a short story.", "en", "ja", Tier.STANDARD);
