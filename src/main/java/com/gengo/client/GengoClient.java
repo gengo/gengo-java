@@ -364,27 +364,6 @@ public class GengoClient extends JsonHttpApi
     }
 
     /**
-     * Cancel translation jobs. They can only be deleted if they have not been started by a translator.
-     * @param ids a list of job IDs to delete
-     * @return the response from the server
-     * @throws GengoException
-     */
-    public JSONObject deleteTranslationJobs(List<Integer> ids) throws GengoException
-    {
-        try
-        {
-            String url = baseUrl + "translate/jobs/";
-            JSONObject data = new JSONObject();
-            data.put("job_ids", ids);
-            return call(url, HttpMethod.DELETE, data);
-        }
-        catch (JSONException x)
-        {
-            throw new GengoException(x.getMessage(), x);
-        }
-    }
-
-    /**
      * Get a list of supported languages and their language codes.
      * @return the response from the server
      * @throws GengoException
