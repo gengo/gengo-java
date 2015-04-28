@@ -39,7 +39,7 @@ import com.gengo.client.exceptions.GengoException;
  */
 public class JsonHttpApi
 {
-    public static final String CLIENT_VERSION = "2.0";
+    public static final String CLIENT_VERSION = "2.1";
 
     /** Whether authentication is required by default for API method calls. */
     private static final boolean AUTHENTICATION_REQUIRED_DEFAULT = true;
@@ -452,7 +452,7 @@ public class JsonHttpApi
     private String httpPut(HttpURLConnection con, String query) throws GengoException
     {
         con.setDoOutput(true);
-        con.setRequestProperty("Content-Type", "text/plain");
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         try
         {
             String length = Integer.toString(query.getBytes("UTF-8").length);
