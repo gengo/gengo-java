@@ -452,7 +452,7 @@ public class JsonHttpApi
     private String httpPut(HttpURLConnection con, String query) throws GengoException
     {
         con.setDoOutput(true);
-        con.setRequestProperty("Content-Type", "text/plain");
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         try
         {
             String length = Integer.toString(query.getBytes("UTF-8").length);
