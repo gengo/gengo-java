@@ -172,14 +172,17 @@ public class GengoClient extends JsonHttpApi
     /**
      * Approve a translation.
      * @param id The job ID
-     * @param rating A rating for the translation
+     * @param rating_time A rating for the translation time
+     * @param rating_quality A rating for the translation quality
+     * @param rating_response A rating for the translator response
      * @param commentsForTranslator Comments for the translator
      * @param commentsForGengo Comments for Gengo
      * @param feedbackIsPublic true iff the feedback can be shared publicly
      * @return the response from the server
      * @throws GengoException
      */
-    public JSONObject approveTranslationJob(int id, Rating rating,
+    public JSONObject approveTranslationJob(int id, Rating rating_time,
+            Rating rating_quality, Rating rating_response,
             String commentsForTranslator, String commentsForGengo,
             boolean feedbackIsPublic) throws GengoException
     {
@@ -194,8 +197,14 @@ public class GengoClient extends JsonHttpApi
             if (commentsForGengo != null) {
                 data.put("for_gengo", commentsForGengo);
             }
-            if (rating != null) {
-                data.put("rating", rating.toString());
+            if (rating_time != null) {
+                data.put("rating_time", rating_time.toString());
+            }
+            if (rating_quality != null) {
+                data.put("rating_quality", rating_quality.toString());
+            }
+            if (rating_response != null) {
+                data.put("rating_response", rating_response.toString());
             }
             data.put("public", feedbackIsPublic ? MYGENGO_TRUE : MYGENGO_FALSE);
             return call(url, HttpMethod.PUT, data);
@@ -205,10 +214,57 @@ public class GengoClient extends JsonHttpApi
         }
     }
 
+    /**
+     * Approve a translation.
+     * @param id The job ID
+     * @param rating A rating for the translation
+     * @param commentsForTranslator Comments for the translator
+     * @param commentsForGengo Comments for Gengo
+     * @param feedbackIsPublic true iff the feedback can be shared publicly
+     * @return the response from the server
+     * @throws GengoException
+     */
+    @Deprecated
+    public JSONObject approveTranslationJob(int id, Rating rating,
+            String commentsForTranslator, String commentsForGengo,
+            boolean feedbackIsPublic) throws GengoException
+    {
+        return approveTranslationJob(id, rating, rating, rating, commentsForTranslator, commentsForGengo, feedbackIsPublic);
+    }
+
+    /**
+     * Approve a translation. The feedback will be private.
+     * @param id The job ID
+     * @param rating_time A rating for the translation time
+     * @param rating_quality A rating for the translation quality
+     * @param rating_response A rating for the translator response
+     * @param commentsForTranslator Comments for the translator
+     * @param commentsForGengo Comments for Gengo
+     * @return the response from the server
+     * @throws GengoException
+     */
+    public JSONObject approveTranslationJob(int id, Rating rating_time,
+            Rating rating_quality, Rating rating_response,
+            String commentsForTranslator, String commentsForGengo) throws GengoException
+    {
+        return approveTranslationJob(id, rating_time, rating_quality, rating_response, commentsForTranslator, commentsForGengo, false);
+    }
+
+    /**
+     * Approve a translation.
+     * @param id The job ID
+     * @param rating A rating for the translation
+     * @param commentsForTranslator Comments for the translator
+     * @param commentsForGengo Comments for Gengo
+     * @param feedbackIsPublic true iff the feedback can be shared publicly
+     * @return the response from the server
+     * @throws GengoException
+     */
+    @Deprecated
     public JSONObject approveTranslationJob(int id, Rating rating,
             String commentsForTranslator, String commentsForGengo) throws GengoException
     {
-        return approveTranslationJob(id, rating, commentsForTranslator, commentsForGengo, false);
+        return approveTranslationJob(id, rating, rating, rating, commentsForTranslator, commentsForGengo, false);
     }
 
     /**
