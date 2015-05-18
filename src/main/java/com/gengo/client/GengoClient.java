@@ -1,11 +1,9 @@
 package com.gengo.client;
 
-import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,11 +11,8 @@ import com.gengo.client.enums.HttpMethod;
 import com.gengo.client.enums.Rating;
 import com.gengo.client.enums.RejectReason;
 import com.gengo.client.exceptions.GengoException;
-import com.gengo.client.payloads.Approval;
 import com.gengo.client.payloads.FileJob;
 import com.gengo.client.payloads.Payload;
-import com.gengo.client.payloads.Rejection;
-import com.gengo.client.payloads.Revision;
 import com.gengo.client.payloads.TranslationJob;
 import com.gengo.client.payloads.Payloads;
 
