@@ -39,7 +39,7 @@ import com.gengo.client.exceptions.GengoException;
  */
 public class JsonHttpApi
 {
-    public static final String CLIENT_VERSION = "2.1.1";
+    public static final String CLIENT_VERSION = "2.1.2";
 
     /** Whether authentication is required by default for API method calls. */
     private static final boolean AUTHENTICATION_REQUIRED_DEFAULT = true;
