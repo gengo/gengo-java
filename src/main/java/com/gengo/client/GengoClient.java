@@ -190,7 +190,7 @@ public class GengoClient extends JsonHttpApi
                 data.put("for_translator", commentsForTranslator);
             }
             if (commentsForGengo != null) {
-                data.put("for_gengo", commentsForGengo);
+                data.put("for_mygengo", commentsForGengo);
             }
             if (ratingTime != null) {
                 data.put("rating_time", ratingTime.toString());
