@@ -140,6 +140,34 @@ public class GengoClient extends JsonHttpApi
             throw new GengoException(x.getMessage(), x);
         }
     }
+    
+    /**
+     * Submit multiple file jobs for translation.
+     * @param jobs FileJob payload objects
+     * @param processAsGroup true iff the jobs should be processed as a group
+     * @return the response from the server
+     * @throws GengoException
+     */
+    public JSONObject postFileJobs(List<FileJob> jobs, boolean processAsGroup)
+    	    throws GengoException
+    	    {
+    	        try
+    	        {
+    	            String url = baseUrl + "translate/jobs";
+    	            JSONObject data = new JSONObject();
+    	            /* We can safely cast our list of jobs into a list of the payload base type */
+    	            @SuppressWarnings({ "rawtypes", "unchecked" })
+    	            List<Payload> p = (List)jobs;
+    	            data.put("jobs", (new Payloads(p)).toJSONArray());
+    	            data.put("as_group", processAsGroup ? MYGENGO_TRUE : MYGENGO_FALSE);
+    	            JSONObject rsp = call(url, HttpMethod.POST, data);
+    	            return rsp;
+    	        }
+    	        catch (JSONException x)
+    	        {
+    	            throw new GengoException(x.getMessage(), x);
+    	        }
+    	    }
 
     /**
      * Request revisions for a job.
