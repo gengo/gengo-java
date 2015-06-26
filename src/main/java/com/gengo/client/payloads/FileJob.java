@@ -31,6 +31,7 @@ public class FileJob extends Payload
     private String callbackUrl;
     private boolean autoApprove;
     private String customData;
+    private String identifier;
 
     /**
      * Create a file job with a slug string.
@@ -147,7 +148,15 @@ public class FileJob extends Payload
         customData = new String(data);
     }
 
-    /** Utility method */
+    public String getIdentifier() {
+    	return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+    	this.identifier = identifier;
+    }
+
+	/** Utility method */
     private boolean isNullOrEmpty(String str)
     {
         return (null == str || str.length() == 0);
@@ -197,6 +206,10 @@ public class FileJob extends Payload
 			if (null != this.customData && this.customData.length() > 0)
 			{
 				job.put("custom_data", this.customData);
+			}
+			if (!isNullOrEmpty(this.identifier))
+			{
+				job.put("identifier", this.identifier);
 			}
 		}
 		catch (JSONException e)

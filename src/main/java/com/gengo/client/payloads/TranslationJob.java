@@ -23,6 +23,7 @@ public class TranslationJob extends Payload
 	private String sourceLanguageCode;
 	private String targetLanguageCode;
 	private Tier tier;
+	private String type;
 
 	/* Optional fields */
 	private boolean forceNewTranslation;
@@ -34,6 +35,7 @@ public class TranslationJob extends Payload
 	private String position;
 	private String glossaryId;
 	private String maxChar;
+	private String identifier; //use when 
 	
 	/**
 	 * Create a translation job.
@@ -170,6 +172,22 @@ public class TranslationJob extends Payload
 		this.maxChar = maxChar;
 	}
 
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	/** Utility method */
 	private boolean isNullOrEmpty(String str)
 	{
@@ -231,6 +249,14 @@ public class TranslationJob extends Payload
 			if (!isNullOrEmpty(this.maxChar))
 			{
 				job.put("max_char", this.maxChar);
+			}
+			if (!isNullOrEmpty(this.identifier))
+			{
+				job.put("identifier", this.identifier);
+			}
+			if (!isNullOrEmpty(this.type))
+			{
+				job.put("type", this.type);
 			}
 		}
 		catch (JSONException e)
