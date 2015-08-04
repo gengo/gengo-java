@@ -361,6 +361,7 @@ public class GengoClient extends JsonHttpApi
     
     /**
      * Archive a translation.
+     * @deprecated
      * @param id the job ID
      * @return the response from the server
      * @throws GengoException
@@ -417,34 +418,12 @@ public class GengoClient extends JsonHttpApi
     }
     
     /**
-     * Create jobs.
-     * @param jobs TranslationJob instances
-     * @return
-     * @throws GengoException
-     */
-    public JSONObject postTranslationJobs(List<TranslationJob> jobs) throws GengoException
-    {
-    	try
-    	{
-    		String url = this.getBaseUrl() + "translate/jobs";
-    		JSONObject data = new JSONObject();
-    		for (Integer i = 1; i <= jobs.size(); i++) {
-    			data.put("job_" + i, jobs.get(i - 1));
-    		}
-    		return call(url, HttpMethod.POST, data);
-    	} catch (JSONException x)
-    	{
-    		throw new GengoException(x.getMessage(), x);
-    	}
-    }
-    
-    /**
      * Set revision comment for each jobs.
      * @param jobs each Entry consists of job ID and comment text
      * @return
      * @throws GengoException
      */
-    public JSONObject reviseTranslationJobs(List<Map.Entry<Integer, String>> jobs) throws GengoException
+    public JSONObject reviseTranslationJobs(HashMap<Integer, String> jobs) throws GengoException
     {
     	try
     	{
@@ -453,11 +432,9 @@ public class GengoClient extends JsonHttpApi
     		data.put("action", "revise");
     		//[begin] Generate 'job_ids' parameter.
     		JSONArray job_ids = new JSONArray();
-    		Iterator<Entry<Integer, String>> iJobs = jobs.iterator();
-    		while (iJobs.hasNext()) {
-    			Map.Entry<Integer, String> iJob  = iJobs.next();
+    		for (Entry<Integer, String> iJob : jobs.entrySet()) {
     			HashMap<String, Object> job = new HashMap<String, Object>();
-    			job.put("jobs_id", iJob.getKey());
+    			job.put("job_id", iJob.getKey());
     			job.put("comment", iJob.getValue());
     			job_ids.put(job);
     		}

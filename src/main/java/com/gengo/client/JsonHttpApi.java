@@ -156,6 +156,7 @@ public class JsonHttpApi
         handleData(parameters, data, method);
 
         String queryString = makeQueryString(parameters);
+        //System.out.println(queryString);// for debugging.
         String rsp = sendRequest(method, url, queryString);
 
         JSONObject doc;
