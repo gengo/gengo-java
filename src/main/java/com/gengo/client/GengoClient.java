@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.gengo.client.GengoConstants;
 import com.gengo.client.enums.HttpMethod;
+import com.gengo.client.enums.JobStatus;
 import com.gengo.client.enums.Rating;
 import com.gengo.client.enums.RejectReason;
 import com.gengo.client.exceptions.GengoException;
@@ -415,6 +416,24 @@ public class GengoClient extends JsonHttpApi
         String url = this.getBaseUrl() + "translate/jobs/";
         url += join(ids, ",");
         return call(url, HttpMethod.GET);
+    }
+    
+    public JSONObject getTranslationJobs(List<Integer> ids, JobStatus status, Integer timestampAfter, Integer count) throws GengoException
+    {
+    	String url = this.getBaseUrl() + "translate/jobs/";
+    	if (ids != null && ids.size() > 0) {
+    		url += join(ids, ",");
+    	}
+    	if (status != null) {
+    		
+    	}
+    	if (timestampAfter != null && timestampAfter > 0) {
+    		
+    	}
+    	if (count != null && count > 0) {
+    		
+    	}
+    	return call(url, HttpMethod.GET);
     }
     
     /**
