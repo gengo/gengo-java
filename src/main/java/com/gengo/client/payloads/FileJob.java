@@ -31,6 +31,9 @@ public class FileJob extends Payload
     private String callbackUrl;
     private boolean autoApprove;
     private String customData;
+    private String tone;
+    private String purpose;
+    
     private String identifier;
 
     /**
@@ -147,7 +150,18 @@ public class FileJob extends Payload
         }
         customData = new String(data);
     }
-
+    public String getTone() {
+    	return this.tone;
+    }
+    public void setTone(String tone) {
+    	this.tone = tone;
+    }
+    public String getPurpose() {
+    	return this.purpose;
+    }
+    public void setPurpose(String purpose) {
+    	this.purpose = purpose;
+    }
     public String getIdentifier() {
     	return identifier;
     }
@@ -206,6 +220,12 @@ public class FileJob extends Payload
 			if (null != this.customData && this.customData.length() > 0)
 			{
 				job.put("custom_data", this.customData);
+			}
+			if (!this.isNullOrEmpty(this.tone)) {
+				job.put("tone", this.tone);
+			}
+			if (!this.isNullOrEmpty(this.purpose)) {
+				job.put("purpose", this.purpose);
 			}
 			if (!isNullOrEmpty(this.identifier))
 			{

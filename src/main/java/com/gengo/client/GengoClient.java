@@ -401,8 +401,9 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject getTranslationJobs() throws GengoException
     {
-        String url = this.getBaseUrl() + "translate/jobs/";
-        return call(url, HttpMethod.GET);
+//        String url = this.getBaseUrl() + "translate/jobs/";
+//        return call(url, HttpMethod.GET);
+    	return this.getTranslationJobs(null, null, null, null);
     }
 
     /**
@@ -413,27 +414,50 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject getTranslationJobs(List<Integer> ids) throws GengoException
     {
-        String url = this.getBaseUrl() + "translate/jobs/";
-        url += join(ids, ",");
-        return call(url, HttpMethod.GET);
+//        String url = this.getBaseUrl() + "translate/jobs/";
+//        url += join(ids, ",");
+//        return call(url, HttpMethod.GET);
+    	return this.getTranslationJobs(ids, null, null, null);
     }
     
+    /**
+     * Get specific translation jobs.
+     * @param ids a list of job ids to retrieve
+     * @param status one of the JobStatus
+     * @param timestampAfter Unix epoch seconds from which to filter submitted jobs
+     * @param count limit count of jobs(default 10, maximum 200)
+     * @return
+     * @throws GengoException
+     */
     public JSONObject getTranslationJobs(List<Integer> ids, JobStatus status, Integer timestampAfter, Integer count) throws GengoException
     {
     	String url = this.getBaseUrl() + "translate/jobs/";
+    	JSONObject data = new JSONObject();
     	if (ids != null && ids.size() > 0) {
     		url += join(ids, ",");
     	}
     	if (status != null) {
-    		
+    		try {
+    			data.put("status", status);
+    		} catch (JSONException x) {
+    			throw new GengoException(x.getMessage(), x);
+    		}
     	}
     	if (timestampAfter != null && timestampAfter > 0) {
-    		
+    		try {
+    			data.put("timestamp_after", timestampAfter);
+    		} catch (JSONException x) {
+    			throw new GengoException(x.getMessage(), x);
+    		}
     	}
     	if (count != null && count > 0) {
-    		
+    		try {
+    			data.put("count", count);
+    		} catch (JSONException x) {
+    			throw new GengoException(x.getMessage(), x);
+    		}
     	}
-    	return call(url, HttpMethod.GET);
+    	return call(url, HttpMethod.GET, data);
     }
     
     /**
@@ -658,7 +682,29 @@ public class GengoClient extends JsonHttpApi
     }
 
     /**
+     * Get a quote for text translation jobs.
+     * @param jobs a list of TranslationJob instance
+     * @return
+     * @throws GengoException
+     */
+    public JSONObject determineTranslationCostText(List<TranslationJob> jobs) throws GengoException {
+    	try {
+    		String url = this.getBaseUrl() + "translate/service/quote";
+    		JSONObject data = new JSONObject();
+    		JSONArray _jobs = new JSONArray();
+    		data.put("jobs", _jobs);
+    		for (TranslationJob iJob : jobs) {
+    			_jobs.put(iJob.toJSONObject());
+    		}
+    		return call(url, HttpMethod.POST, data);
+    	} catch (JSONException x) {
+    		throw new GengoException(x.getMessage(), x);
+    	}
+    }
+
+    /**
      * Get a quote for translation jobs.
+     * @deprecated {@link GengoClient#determineTranslationCostText(List)}}
      * @param jobs Translation job objects to be quoted for
      * @return the response from the server
      * @throws GengoException
@@ -676,7 +722,7 @@ public class GengoClient extends JsonHttpApi
             throw new GengoException(x.getMessage(), x);
         }
     }
-
+    
     /**
      * Get translation jobs which were previously submitted together by their order id.
      *
@@ -768,7 +814,6 @@ public class GengoClient extends JsonHttpApi
     
     /**
      * Get a quote for file jobs.
-     * @deprecated {@link GengoClient#determineTranslationCost(Payloads)}
      * @param jobs Translation job objects to be quoted
      * @param filePaths map of file keys to filesystem paths
      * @return the response from the server
@@ -779,14 +824,18 @@ public class GengoClient extends JsonHttpApi
         try
         {
             JSONObject theJobs = new JSONObject();
-
+            if (jobs.size() != filePaths.size()) {
+            	throw new GengoException("Deference of length between 'jobs' and 'filePaths' found.");
+            }
+            if (jobs.size() > 50 || filePaths.size() > 50) {
+            	throw new GengoException("Requested collection's size is overflowed.(maximum is 50)");
+            }
             for (int i = 0; i < jobs.size(); i++) {
                 theJobs.put(String.format("job_%s", i), jobs.get(i).toJSONObject());
             }
             String url = this.getBaseUrl() + "translate/service/quote/file";
             JSONObject data = new JSONObject();
             data.put("jobs", theJobs);
-
             return httpPostFileUpload(url, data, filePaths);
         } catch (JSONException x)
         {

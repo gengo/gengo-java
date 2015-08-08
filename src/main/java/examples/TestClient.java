@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.IllegalArgumentException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -13,10 +14,10 @@ import java.util.Random;
 import com.gengo.client.GengoClient;
 import com.gengo.client.exceptions.*;
 import com.gengo.client.payloads.Approval;
-import com.gengo.client.payloads.Payloads;
 import com.gengo.client.payloads.Rejection;
 import com.gengo.client.payloads.TranslationJob;
 import com.gengo.client.enums.ApiServiceLevel;
+import com.gengo.client.enums.JobStatus;
 import com.gengo.client.enums.Rating;
 import com.gengo.client.enums.RejectReason;
 import com.gengo.client.enums.Tier;
@@ -52,42 +53,37 @@ public class TestClient {
 	/**
 	 * Test account functionalities.
 	 */
-	public void testAccount() {
+	public void testAccount(Boolean verbose) {
+		verbose = verbose == null ? true : verbose;
 		System.out.println("[testAccount] start@" + this.sessionHash);
 		JSONObject response = null;
 		// Stats(GET)
 		System.out.println("Account::Stats(GET)");
-		try
-		{
+		try {
 			response = this.gc.getAccountStats();
 			System.out.print("[OK] ");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG] ");
 			System.out.println(x.getMessage());
 		}
 		// Balance(GET)
 		System.out.println("Account::Balance(GET)");
-		try
-		{
+		try	{
 			response = this.gc.getAccountBalance();
 			System.out.print("[OK] ");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG] ");
 			System.out.println(x.getMessage());
 		}
 		// Preferred translators(GET)
 		System.out.println("Account::PreferredTranslators(GET)");
-		try
-		{
+		try	{
 			response = this.gc.getAccountPreferredTranslators();
 			System.out.print("[OK] ");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG] ");
 			System.out.println(x.getMessage());
 		}
@@ -97,46 +93,42 @@ public class TestClient {
 	/**
 	 * Test service functionalities.
 	 */
-	public void testService() {
+	public void testService(Boolean verbose) {
+		verbose = verbose == null ? true : verbose;
 		System.out.println("[testService] start@" + this.sessionHash);
 		JSONObject response;
 		// Language pairs(GET)
 		System.out.println("Service::Language pairs(GET)");
-		try
-		{
+		try	{
 			response = this.gc.getServiceLanguagePairs();
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Languages(GET)
 		System.out.println("Service::Languages(GET)");
-		try
-		{
+		try	{
 			response = this.gc.getServiceLanguages();
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Quote(POST)
 		System.out.println("Service::Quote(POST)");
-		Payloads pl;
-		try
-		{
-			pl = new Payloads();
-			pl.add(new TranslationJob("Single :: English to Japanese", "Test (" + this.sessionHash + ")",
+		try	{
+			List<TranslationJob> qt_jobs = new ArrayList<TranslationJob>();
+			qt_jobs.add(new TranslationJob("Test job for quoting.(1) (" + this.sessionHash + ")", "Test.",
 					"en", "ja", Tier.STANDARD));
-			response = this.gc.determineTranslationCost(pl);
+			qt_jobs.add(new TranslationJob("Test job for quoting.(2) (" + this.sessionHash + ")", "Test.",
+					"en", "ja", Tier.PRO));
+			response = this.gc.determineTranslationCostText(qt_jobs);
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
@@ -146,13 +138,13 @@ public class TestClient {
 	/**
 	 * Test jobs functionalities.
 	 */
-	public void testJobs() {
+	public void testJobs(Boolean verbose) {
+		verbose = verbose == null ? true : verbose;
 		System.out.println("[testJobs] start@" + this.sessionHash);
 		JSONObject response = null;
 		List<TranslationJob> pll;
 		// Jobs(POST) single
-		try
-		{
+		try	{
 			System.out.println("Jobs::(POST) single");
 			pll = Arrays.asList(
 					new TranslationJob("[Single] en2ja::" + this.sessionHash, "Test.",
@@ -160,14 +152,13 @@ public class TestClient {
 					);
 			response = this.gc.postTranslationJobs(pll, false);
 			System.out.print("[OK]");
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Jobs(POST) multiple
-		try
-		{
+		try	{
 			System.out.println("Jobs::(POST) multiple");
 			pll = Arrays.asList(
 					new TranslationJob("[Multiple] en2ja(1)::" + this.sessionHash, "Test. (1)",
@@ -177,60 +168,60 @@ public class TestClient {
 					);
 			response = this.gc.postTranslationJobs(pll, true);
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Jobs(GET)
-		try
-		{
+		try	{
 			System.out.println("Jobs::(GET)");
 			response = this.gc.getTranslationJobs();
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Jobs(GET) by id
 		Integer[] jobs_get = null;
-		try
-		{
+		try	{
 			jobs_get = new Integer[(int) Math.floor(response.getJSONArray("response").length() / 2)];
 			for (int i = 0; i < (int) Math.floor(response.getJSONArray("response").length() / 2); i++) {
 				jobs_get[i] = response.getJSONArray("response").getJSONObject(i).getInt("job_id");
 			}
-		} catch (JSONException x)
-		{
+		} catch (JSONException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 		}
-
-		try
-		{
+		try	{
 			System.out.println("Jobs::(GET) by id");
 			response = this.gc.getTranslationJobs(Arrays.asList(jobs_get));
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
+			System.out.print("[NG]");
+			System.out.println(x.getMessage());
+		}
+		// Jobs(GET) by status and limit 5
+		try	{
+			System.out.println("Jobs::(GET) by status and limit 5");
+			response = this.gc.getTranslationJobs(Arrays.asList(jobs_get), JobStatus.AVAILABLE, null, 5);
+			System.out.print("[OK]");
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		JSONArray jobs_modify = null;
-		try
-		{
+		try	{
 			jobs_modify = response.getJSONObject("response").getJSONArray("jobs");
 		} catch (JSONException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Jobs(PUT) revise
-		try
-		{
+		try	{
 			System.out.println("Jobs::(PUT) revise");
 			HashMap<Integer, String> jobs_revise = new HashMap<Integer, String>();
 			for (Integer i = 0; i < jobs_modify.length(); i++) {
@@ -238,22 +229,22 @@ public class TestClient {
 					jobs_revise.put(jobs_modify.getJSONObject(i).getInt("job_id"), "Revising test via API.");
 				}
 			}
-			response = this.gc.reviseTranslationJobs(jobs_revise);
-			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (JSONException x)
-		{
+			if (jobs_revise.isEmpty()) {
+				System.out.println("[Skipped] No effective jobs.");
+			} else {
+				response = this.gc.reviseTranslationJobs(jobs_revise);
+				System.out.print("[OK]");
+				System.out.println(verbose ? response.toString() : "");
+			}
+		} catch (JSONException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
-		} catch (GengoException x)
-		{
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
-		
 		// Jobs(PUT) approve
-		try
-		{
+		try	{
 			System.out.println("Jobs::(PUT) approve");
 			List<Approval> jobs_approval = Arrays.asList();
 			for (Integer i = 0; i < jobs_modify.length(); i++) {
@@ -267,19 +258,22 @@ public class TestClient {
 							);
 				}
 			}
-			response = this.gc.approveTranslationJobs(jobs_approval);
-		} catch (JSONException x)
-		{
+			if (jobs_approval.isEmpty()) {
+				System.out.println("[Skipped] No effective jobs.");
+			} else {
+				response = this.gc.approveTranslationJobs(jobs_approval);
+				System.out.print("[OK]");
+				System.out.println(verbose ? response.toString() : "");
+			}
+		} catch (JSONException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
-		} catch (GengoException x)
-		{
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Jobs(PUT) reject
-		try
-		{
+		try	{
 			System.out.println("Jobs::(PUT) reject");
 			List<Rejection> jobs_reject= Arrays.asList();
 			for (Integer i = 0; i < jobs_modify.length(); i++) {
@@ -293,19 +287,22 @@ public class TestClient {
 							);
 				}
 			}
-			response = this.gc.rejectTranslationJobs(jobs_reject);
-		} catch (JSONException x)
-		{
+			if (jobs_reject.isEmpty()) {
+				System.out.println("[Skipped] No effective jobs.");
+			} else {
+				response = this.gc.rejectTranslationJobs(jobs_reject);
+				System.out.print("[OK]");
+				System.out.println(verbose ? response.toString() : "");
+			}
+		} catch (JSONException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
-		} catch (GengoException x)
-		{
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Jobs(PUT) archive
-		try
-		{
+		try	{
 			System.out.println("Jobs::(PUT) reject");
 			List<Integer> jobs_archive= Arrays.asList();
 			for (Integer i = 0; i < jobs_modify.length(); i++) {
@@ -313,13 +310,17 @@ public class TestClient {
 					jobs_archive.add(jobs_modify.getJSONObject(i).getInt("job_id"));
 				}
 			}
-			response = this.gc.archiveTranslationJobs(jobs_archive);
-		} catch (JSONException x)
-		{
+			if (jobs_archive.isEmpty()) {
+				System.out.println("[Skipped] No effective jobs.");
+			} else {
+				response = this.gc.archiveTranslationJobs(jobs_archive);
+				System.out.print("[OK]");
+				System.out.println(verbose ? response.toString() : "");
+			}
+		} catch (JSONException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
-		} catch (GengoException x)
-		{
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
@@ -329,38 +330,33 @@ public class TestClient {
 	/**
 	 * Test job functionalities.
 	 */
-	public void testJob() {
+	public void testJob(Boolean verbose) {
+		verbose = verbose == null ? true : verbose;
 		System.out.println("[testJob] start@" + this.sessionHash);
 		JSONObject response = null;
 		// Preparation
 		int job_id = -1;
 		String job_status = null;
-		try
-		{
+		try	{
 			response = this.gc.getTranslationJobs();
 			job_id = response.getJSONArray("response").getJSONObject(0).getInt("job_id");
-		} catch (JSONException x)
-		{
+		} catch (JSONException x) {
 			System.out.println("[Skipped] Preparation failed. " + x.getMessage());
-		} catch (GengoException x)
-		{
+		} catch (GengoException x) {
 			System.out.println("[Skipped] Preparation failed. " + x.getMessage());
 		}
 		// Job(GET)
 		System.out.println("Job::(GET)");
 		if (job_id != -1) {
-			try
-			{
+			try	{
 				response = this.gc.getTranslationJob(job_id);
 				job_status = response.getJSONObject("response").getString("status");
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (JSONException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (JSONException x) {
 				System.out.print("[Skipped]");
 				System.out.println(x.getMessage());
-			} catch (GengoException x)
-			{
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -370,13 +366,11 @@ public class TestClient {
 		// Job(PUT) revise
 		System.out.println("Job::(PUT) revise");
 		if (job_id != -1 && job_status == "reviewable") {
-			try
-			{
+			try	{
 				response = this.gc.reviseTranslationJob(job_id, "Test revise via API.");
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (GengoException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -386,15 +380,13 @@ public class TestClient {
 		// Job(PUT) approve
 		System.out.println("Job::(PUT) approve");
 		if (job_id != -1 && job_status == "reviewable") {
-			try
-			{
+			try	{
 				response = this.gc.approveTranslationJob(job_id, Rating.THREE_STARS, Rating.FOUR_STARS, Rating.TWO_STARS,
 						"Test comment for translator via API.", 
 						"Test comment for Gengo.", false);
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (GengoException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -404,14 +396,12 @@ public class TestClient {
 		// Job(PUT) reject
 		System.out.println("Job::(PUT) reject");
 		if (job_id != -1 && job_status == "reviewable") {
-			try
-			{
+			try	{
 				response = this.gc.rejectTranslationJob(job_id, RejectReason.OTHER,
 						"Test reject reason via API.", "", false);
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (GengoException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -422,13 +412,11 @@ public class TestClient {
 		// Job::Revisions(GET)
 		System.out.println("Job Revisions::(GET)");
 		if (job_id != -1) {
-			try
-			{
+			try	{
 				response = this.gc.getTranslationJobRevisions(job_id);
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (GengoException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -438,18 +426,15 @@ public class TestClient {
 		// Job::Revision(GET)
 		System.out.println("Job Revision::(GET)");
 		if (job_id != -1) {
-			try
-			{
+			try {
 				response = this.gc.getTranslationJobRevision(job_id,
 						response.getJSONObject("response").getJSONArray("revisions").getJSONObject(0).getInt("rev_id"));
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (JSONException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (JSONException x) {
 				System.out.print("[Skipped]");
 				System.out.println(x.getMessage());
-			} catch (GengoException x)
-			{
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -459,13 +444,11 @@ public class TestClient {
 		// Job::Feedback(GET)
 		System.out.println("Job Feedback::(GET)");
 		if (job_id != -1) {
-			try
-			{
+			try {
 				response = this.gc.getTranslationJobFeedback(job_id);
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (GengoException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -475,13 +458,11 @@ public class TestClient {
 		// Job::Comment(POST)
 		System.out.println("Job Comment::(POST)");
 		if (job_id != -1) {
-			try
-			{
+			try	{
 				response = this.gc.postTranslationJobComment(job_id, "Test comment via API.");
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (GengoException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -491,13 +472,11 @@ public class TestClient {
 		// Job::Comments(GET)
 		System.out.println("Job Comments::(GET)");
 		if (job_id != -1) {
-			try
-			{
+			try	{
 				response = this.gc.getTranslationJobComments(job_id);
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (GengoException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -507,13 +486,11 @@ public class TestClient {
 		// Job(DELETE)
 		System.out.println("Job::(DELETE)");
 		if (job_id != -1) {
-			try
-			{
+			try	{
 				response = this.gc.deleteTranslationJob(job_id);
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (GengoException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -527,55 +504,48 @@ public class TestClient {
 	 * Test order functionalities.
 	 * @param order_id prematured Order ID is expected
 	 */
-	public void testOrder(int order_id)
+	public void testOrder(Boolean verbose, int order_id)
 	{
+		verbose = verbose == null ? true : verbose;
 		System.out.println("[testOrder] start@" + this.sessionHash);
 		JSONObject response = null;
 		// Order::(GET)
 		System.out.println("Order::(GET)");
-		try
-		{
+		try	{
 			response = this.gc.getOrderJobs(order_id);
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Order:: Comment(POST)
 		System.out.println("Order:: Comment(POST)");
-		try
-		{
+		try	{
 			response = this.gc.postOrderComment(order_id, "Test order comment via API.");
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Order:: Comments(GET)
 		System.out.println("Order:: Comments(GET)");
-		try
-		{
+		try	{
 			response = this.gc.getOrderComments(order_id);
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Order::(DELETE)
 		System.out.println("Order::(DELETE)");
-		try
-		{
+		try	{
 			response = this.gc.deleteTranslationOrder(order_id);
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (GengoException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
@@ -585,38 +555,34 @@ public class TestClient {
 	/**
 	 * Test glossary functionalities.
 	 */
-	public void testGlossary()
+	public void testGlossary(Boolean verbose)
 	{
+		verbose = verbose == null ? true : verbose;
 		System.out.println("[testGlossary] start@" + this.sessionHash);
 		JSONObject response = null;
 		int glossary_id = -1;
 		// Glossaries (GET)
 		System.out.println("Glossaries::(GET)");
-		try
-		{
+		try	{
 			response = this.gc.getGlossaryList();
 			glossary_id = response.getJSONArray("response").getJSONObject(0).getInt("id");
 			System.out.print("[OK]");
-			System.out.println(response.toString());
-		} catch (JSONException x)
-		{
+			System.out.println(verbose ? response.toString() : "");
+		} catch (JSONException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
-		} catch (GengoException x)
-		{
+		} catch (GengoException x) {
 			System.out.print("[NG]");
 			System.out.println(x.getMessage());
 		}
 		// Glossary (GET)
 		System.out.println("Glossary::(GET)");
 		if (glossary_id != -1) {
-			try
-			{
+			try	{
 				response = this.gc.getGlossary(glossary_id);
 				System.out.print("[OK]");
-				System.out.println(response.toString());
-			} catch (GengoException x)
-			{
+				System.out.println(verbose ? response.toString() : "");
+			} catch (GengoException x) {
 				System.out.print("[NG]");
 				System.out.println(x.getMessage());
 			}
@@ -628,12 +594,12 @@ public class TestClient {
 	
 	public static void main(String[] args) throws GengoException {
 		TestClient tc = new TestClient(ApiServiceLevel.STAGING);
-		tc.testAccount();
-		tc.testService();
-		tc.testJobs();
-		tc.testJob();
+		tc.testAccount(false);
+		tc.testService(false);
+		//tc.testJobs(false);
+		//tc.testJob(false);
 		// Order functionalities cannot be tested automatically because API method to enumerate orders is missing. 
-		//tc.testOrder(order_id);
-		tc.testGlossary();
+		//tc.testOrder(false, order_id);
+		//tc.testGlossary(false);
 	}
 }
