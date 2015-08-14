@@ -262,7 +262,7 @@ public class TranslationJob extends Payload
 			}
 			if (this.maxChar != null)
 			{
-				job.put("max_char", this.maxChar);
+				job.put("max_chars", this.maxChar);
 			}
 			if (!this.isNullOrEmpty(this.tone)) {
 				job.put("tone", this.tone);
