@@ -170,6 +170,7 @@ public class JsonHttpApi
                 {
                     error = error.getJSONArray("0").getJSONObject(0);
                 }
+                System.out.println(error.toString());
                 throw new ErrorResponseException(error.getString("msg"), error.getInt("code"));
             }
         }

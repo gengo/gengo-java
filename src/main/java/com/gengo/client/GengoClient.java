@@ -503,7 +503,11 @@ public class GengoClient extends JsonHttpApi
     		String url = this.getBaseUrl() + "translate/jobs";
     		JSONObject data = new JSONObject();
     		data.put("action", "approve");
-    		data.put("job_ids", jobs);
+    		JSONArray iJobs = new JSONArray();
+    		for (int i = 0; i < jobs.size(); i++) {
+    			iJobs.put(jobs.get(i).toJSONObject());
+    		}
+    		data.put("job_ids", iJobs);
     		return call(url, HttpMethod.PUT, data);
     	} catch (JSONException x)
     	{
@@ -524,7 +528,11 @@ public class GengoClient extends JsonHttpApi
     		String url = this.getBaseUrl() + "translate/jobs";
     		JSONObject data = new JSONObject();
     		data.put("action", "reject");
-    		data.put("job_ids", jobs);
+    		JSONArray iJobs = new JSONArray();
+    		for (int i = 0; i < jobs.size(); i++) {
+    			iJobs.put(jobs.get(i).toJSONObject());
+    		}
+    		data.put("job_ids", iJobs);
     		return call(url, HttpMethod.PUT, data);
     	} catch (JSONException x)
     	{
@@ -779,7 +787,7 @@ public class GengoClient extends JsonHttpApi
 	    	url += orderId;
 	    	url += "/comment";
 	    	JSONObject data = new JSONObject();
-	    	data.put("comment", comment);
+	    	data.put("body", comment);
 	    	return call(url, HttpMethod.POST, data);
     	} catch (JSONException x)
     	{
@@ -795,7 +803,7 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject getGlossaryList() throws GengoException
     {
-    	String url = "translate/glossary";
+    	String url = this.getBaseUrl() + "translate/glossary";
     	return call(url, HttpMethod.GET);
     }
     
@@ -807,7 +815,7 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject getGlossary(Integer glossaryId) throws GengoException
     {
-    	String url = "translate/glossary/";
+    	String url = this.getBaseUrl() + "translate/glossary/";
     	url += glossaryId;
     	return call(url, HttpMethod.GET);
     }
@@ -833,7 +841,8 @@ public class GengoClient extends JsonHttpApi
             for (int i = 0; i < jobs.size(); i++) {
                 theJobs.put(String.format("job_%s", i), jobs.get(i).toJSONObject());
             }
-            String url = this.getBaseUrl() + "translate/service/quote/file";
+            //API Reference is back to date. 'translate/service/quote/file' is deprecated.
+            String url = this.getBaseUrl() + "translate/service/quote";
             JSONObject data = new JSONObject();
             data.put("jobs", theJobs);
             return httpPostFileUpload(url, data, filePaths);
