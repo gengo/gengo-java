@@ -31,15 +31,11 @@ import com.gengo.client.payloads.Rejection;
  */
 public class GengoClient extends JsonHttpApi
 {
-//    private static final String STANDARD_BASE_URL = "http://api.staging.gengo.com/v2/";
-//    private static final String SANDBOX_BASE_URL = "http://api.sandbox.gengo.com/v2/";
-
     /** Strings used to represent TRUE and FALSE in requests */
     public static final String MYGENGO_TRUE = "1";
     public static final String MYGENGO_FALSE = "0";
 
     private boolean flagUseSandbox;
-//    private String baseUrl = STANDARD_BASE_URL;
 
     /**
      * Initialize the client.
@@ -48,7 +44,6 @@ public class GengoClient extends JsonHttpApi
      */
     public GengoClient(String publicKey, String privateKey)
     {
-//        this(publicKey, privateKey, false);
     	this(publicKey, privateKey, false);
     }
 
@@ -60,47 +55,21 @@ public class GengoClient extends JsonHttpApi
      */
     public GengoClient(String publicKey, String privateKey, boolean useSandbox)
     {
-    	super(publicKey, privateKey);
-    	this.flagUseSandbox = useSandbox;
+        super(publicKey, privateKey);
+        this.flagUseSandbox = useSandbox;
     }
-    
+
     /**
      * Select URL which requests are sent for.
      * @return
      */
     private String getBaseUrl() {
-    	if (this.flagUseSandbox) {
-    		return GengoConstants.BASE_URL_SANDBOX;
-    	} else {
-    		return GengoConstants.BASE_URL_STANDARD;
-    	}
+        if (this.flagUseSandbox) {
+            return GengoConstants.BASE_URL_SANDBOX;
+        } else {
+            return GengoConstants.BASE_URL_STANDARD;
+        }
     }
-    
-    /**
-     * @return true if the client is using the sandbox
-     */
-//    public boolean getUseSandbox()
-//    {
-//        return SANDBOX_BASE_URL.equals(baseUrl);
-//    }
-
-    /**
-     * Set the client to use the sandbox or the live service.
-     * @param use true iff the client should use the sandbox
-     */
-//    public void setUseSandbox(boolean use)
-//    {
-//        baseUrl = use ? SANDBOX_BASE_URL : STANDARD_BASE_URL;
-//    }
-
-    /**
-     * Set a custom base URL. For development testing purposes only.
-     * @param baseUrl a custom API base URL
-     */
-//    public void setBaseUrl(String baseUrl)
-//    {
-//        this.baseUrl = baseUrl;
-//    }
 
     /**
      * Get account statistics.
@@ -162,7 +131,7 @@ public class GengoClient extends JsonHttpApi
             throw new GengoException(x.getMessage(), x);
         }
     }
-    
+
     /**
      * Submit multiple file jobs for translation.
      * @param jobs FileJob payload objects
@@ -170,24 +139,24 @@ public class GengoClient extends JsonHttpApi
      * @throws GengoException
      */
     public JSONObject postFileJobs(List<FileJob> jobs)
-    	    throws GengoException
-    	    {
-    	        try
-    	        {
-    	            String url = this.getBaseUrl() + "translate/jobs";
-    	            JSONObject data = new JSONObject();
-    	            /* We can safely cast our list of jobs into a list of the payload base type */
-    	            @SuppressWarnings({ "rawtypes", "unchecked" })
-    	            List<Payload> p = (List)jobs;
-    	            data.put("jobs", (new Payloads(p)).toJSONArray());
-    	            JSONObject rsp = call(url, HttpMethod.POST, data);
-    	            return rsp;
-    	        }
-    	        catch (JSONException x)
-    	        {
-    	            throw new GengoException(x.getMessage(), x);
-    	        }
-    	    }
+            throws GengoException
+    {
+        try
+        {
+            String url = this.getBaseUrl() + "translate/jobs";
+            JSONObject data = new JSONObject();
+            /* We can safely cast our list of jobs into a list of the payload base type */
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+            List<Payload> p = (List)jobs;
+            data.put("jobs", (new Payloads(p)).toJSONArray());
+            JSONObject rsp = call(url, HttpMethod.POST, data);
+            return rsp;
+        }
+        catch (JSONException x)
+        {
+            throw new GengoException(x.getMessage(), x);
+        }
+    }
 
     /**
      * Request revisions for a job.
@@ -342,7 +311,7 @@ public class GengoClient extends JsonHttpApi
             throw new GengoException(x.getMessage(), x);
         }
     }
-    
+
     /**
      * Archive a translation.
      * @deprecated
@@ -352,17 +321,17 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject archiveTranslationJob(int id) throws GengoException
     {
-    	try
-    	{
-    		String url = this.getBaseUrl() + "translate/job/" + id;
-    		JSONObject data = new JSONObject();
-    		data.put("action", "archive");
-    		// Todo: Archive functionality parameters are not documented.
-    		return call(url, HttpMethod.PUT, data);
-    	} catch (JSONException x)
-    	{
-    		throw new GengoException(x.getMessage(), x);
-    	}
+        try
+        {
+            String url = this.getBaseUrl() + "translate/job/" + id;
+            JSONObject data = new JSONObject();
+            data.put("action", "archive");
+            // Todo: Archive functionality parameters are not documented.
+            return call(url, HttpMethod.PUT, data);
+        } catch (JSONException x)
+        {
+            throw new GengoException(x.getMessage(), x);
+        }
     }
 
     /**
@@ -384,9 +353,7 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject getTranslationJobs() throws GengoException
     {
-//        String url = this.getBaseUrl() + "translate/jobs/";
-//        return call(url, HttpMethod.GET);
-    	return this.getTranslationJobs(null, null, null, null);
+        return this.getTranslationJobs(null, null, null, null);
     }
 
     /**
@@ -397,12 +364,9 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject getTranslationJobs(List<Integer> ids) throws GengoException
     {
-//        String url = this.getBaseUrl() + "translate/jobs/";
-//        url += join(ids, ",");
-//        return call(url, HttpMethod.GET);
-    	return this.getTranslationJobs(ids, null, null, null);
+        return this.getTranslationJobs(ids, null, null, null);
     }
-    
+
     /**
      * Get specific translation jobs.
      * @param ids a list of job ids to retrieve
@@ -414,35 +378,35 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject getTranslationJobs(List<Integer> ids, JobStatus status, Integer timestampAfter, Integer count) throws GengoException
     {
-    	String url = this.getBaseUrl() + "translate/jobs/";
-    	JSONObject data = new JSONObject();
-    	if (ids != null && ids.size() > 0) {
-    		url += join(ids, ",");
-    	}
-    	if (status != null) {
-    		try {
-    			data.put("status", status);
-    		} catch (JSONException x) {
-    			throw new GengoException(x.getMessage(), x);
-    		}
-    	}
-    	if (timestampAfter != null && timestampAfter > 0) {
-    		try {
-    			data.put("timestamp_after", timestampAfter);
-    		} catch (JSONException x) {
-    			throw new GengoException(x.getMessage(), x);
-    		}
-    	}
-    	if (count != null && count > 0) {
-    		try {
-    			data.put("count", count);
-    		} catch (JSONException x) {
-    			throw new GengoException(x.getMessage(), x);
-    		}
-    	}
-    	return call(url, HttpMethod.GET, data);
+        String url = this.getBaseUrl() + "translate/jobs/";
+        JSONObject data = new JSONObject();
+        if (ids != null && ids.size() > 0) {
+            url += join(ids, ",");
+        }
+        if (status != null) {
+            try {
+                data.put("status", status);
+            } catch (JSONException x) {
+                throw new GengoException(x.getMessage(), x);
+            }
+        }
+        if (timestampAfter != null && timestampAfter > 0) {
+            try {
+                data.put("timestamp_after", timestampAfter);
+            } catch (JSONException x) {
+                throw new GengoException(x.getMessage(), x);
+            }
+        }
+        if (count != null && count > 0) {
+            try {
+                data.put("count", count);
+            } catch (JSONException x) {
+                throw new GengoException(x.getMessage(), x);
+            }
+        }
+        return call(url, HttpMethod.GET, data);
     }
-    
+
     /**
      * Set revision comment for each jobs.
      * @param jobs each Entry consists of job ID and comment text
@@ -451,28 +415,28 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject reviseTranslationJobs(HashMap<Integer, String> jobs) throws GengoException
     {
-    	try
-    	{
-    		String url = this.getBaseUrl() + "translate/jobs";
-    		JSONObject data = new JSONObject();
-    		data.put("action", "revise");
-    		//[begin] Generate 'job_ids' parameter.
-    		JSONArray job_ids = new JSONArray();
-    		for (Entry<Integer, String> iJob : jobs.entrySet()) {
-    			HashMap<String, Object> job = new HashMap<String, Object>();
-    			job.put("job_id", iJob.getKey());
-    			job.put("comment", iJob.getValue());
-    			job_ids.put(job);
-    		}
-    		//[end] Generate 'job_ids' parameter.
-    		data.put("job_ids", job_ids);
-    		return call(url, HttpMethod.PUT, data);
-    	} catch (JSONException x)
-    	{
-    		throw new GengoException(x.getMessage(), x);
-    	}
+        try
+        {
+            String url = this.getBaseUrl() + "translate/jobs";
+            JSONObject data = new JSONObject();
+            data.put("action", "revise");
+            //[begin] Generate 'job_ids' parameter.
+            JSONArray job_ids = new JSONArray();
+            for (Entry<Integer, String> iJob : jobs.entrySet()) {
+                HashMap<String, Object> job = new HashMap<String, Object>();
+                job.put("job_id", iJob.getKey());
+                job.put("comment", iJob.getValue());
+                job_ids.put(job);
+            }
+            //[end] Generate 'job_ids' parameter.
+            data.put("job_ids", job_ids);
+            return call(url, HttpMethod.PUT, data);
+        } catch (JSONException x)
+        {
+            throw new GengoException(x.getMessage(), x);
+        }
     }
-    
+
     /**
      * Approve jobs with collateral attributes.
      * @param jobs list of Approval instance
@@ -481,21 +445,21 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject approveTranslationJobs(List<Approval> jobs) throws GengoException
     {
-    	try
-    	{
-    		String url = this.getBaseUrl() + "translate/jobs";
-    		JSONObject data = new JSONObject();
-    		data.put("action", "approve");
-    		JSONArray iJobs = new JSONArray();
-    		for (int i = 0; i < jobs.size(); i++) {
-    			iJobs.put(jobs.get(i).toJSONObject());
-    		}
-    		data.put("job_ids", iJobs);
-    		return call(url, HttpMethod.PUT, data);
-    	} catch (JSONException x)
-    	{
-    		throw new GengoException(x.getMessage(), x);
-    	}
+        try
+        {
+            String url = this.getBaseUrl() + "translate/jobs";
+            JSONObject data = new JSONObject();
+            data.put("action", "approve");
+            JSONArray iJobs = new JSONArray();
+            for (int i = 0; i < jobs.size(); i++) {
+                iJobs.put(jobs.get(i).toJSONObject());
+            }
+            data.put("job_ids", iJobs);
+            return call(url, HttpMethod.PUT, data);
+        } catch (JSONException x)
+        {
+            throw new GengoException(x.getMessage(), x);
+        }
     }
 
     /**
@@ -506,23 +470,23 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject rejectTranslationJobs(List<Rejection> jobs) throws GengoException
     {
-    	try
-    	{
-    		String url = this.getBaseUrl() + "translate/jobs";
-    		JSONObject data = new JSONObject();
-    		data.put("action", "reject");
-    		JSONArray iJobs = new JSONArray();
-    		for (int i = 0; i < jobs.size(); i++) {
-    			iJobs.put(jobs.get(i).toJSONObject());
-    		}
-    		data.put("job_ids", iJobs);
-    		return call(url, HttpMethod.PUT, data);
-    	} catch (JSONException x)
-    	{
-    		throw new GengoException(x.getMessage(), x);
-    	}
+        try
+        {
+            String url = this.getBaseUrl() + "translate/jobs";
+            JSONObject data = new JSONObject();
+            data.put("action", "reject");
+            JSONArray iJobs = new JSONArray();
+            for (int i = 0; i < jobs.size(); i++) {
+                iJobs.put(jobs.get(i).toJSONObject());
+            }
+            data.put("job_ids", iJobs);
+            return call(url, HttpMethod.PUT, data);
+        } catch (JSONException x)
+        {
+            throw new GengoException(x.getMessage(), x);
+        }
     }
-    
+
     /**
      * Archive jobs.
      * @param jobs list of job ID
@@ -531,18 +495,18 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject archiveTranslationJobs(List<Integer> jobs) throws GengoException
     {
-    	try {
-    		String url = this.getBaseUrl() + "translate/jobs";
-    		JSONObject data = new JSONObject();
-    		data.put("action", "archive");
-    		data.put("job_ids", jobs);
-    		return call(url, HttpMethod.PUT, data);
-    	} catch (JSONException x)
-    	{
-    		throw new GengoException(x.getMessage(), x);
-    	}
+        try {
+            String url = this.getBaseUrl() + "translate/jobs";
+            JSONObject data = new JSONObject();
+            data.put("action", "archive");
+            data.put("job_ids", jobs);
+            return call(url, HttpMethod.PUT, data);
+        } catch (JSONException x)
+        {
+            throw new GengoException(x.getMessage(), x);
+        }
     }
-    
+
     /**
      * Post a comment for a translation job
      * @param id the ID of the job to comment on
@@ -679,18 +643,18 @@ public class GengoClient extends JsonHttpApi
      * @throws GengoException
      */
     public JSONObject determineTranslationCostText(List<TranslationJob> jobs) throws GengoException {
-    	try {
-    		String url = this.getBaseUrl() + "translate/service/quote";
-    		JSONObject data = new JSONObject();
-    		JSONArray _jobs = new JSONArray();
-    		data.put("jobs", _jobs);
-    		for (TranslationJob iJob : jobs) {
-    			_jobs.put(iJob.toJSONObject());
-    		}
-    		return call(url, HttpMethod.POST, data);
-    	} catch (JSONException x) {
-    		throw new GengoException(x.getMessage(), x);
-    	}
+        try {
+            String url = this.getBaseUrl() + "translate/service/quote";
+            JSONObject data = new JSONObject();
+            JSONArray _jobs = new JSONArray();
+            data.put("jobs", _jobs);
+            for (TranslationJob iJob : jobs) {
+                _jobs.put(iJob.toJSONObject());
+            }
+            return call(url, HttpMethod.POST, data);
+        } catch (JSONException x) {
+            throw new GengoException(x.getMessage(), x);
+        }
     }
 
     /**
@@ -713,7 +677,7 @@ public class GengoClient extends JsonHttpApi
             throw new GengoException(x.getMessage(), x);
         }
     }
-    
+
     /**
      * Get translation jobs which were previously submitted together by their order id.
      *
@@ -740,7 +704,7 @@ public class GengoClient extends JsonHttpApi
     	url += orderId;
     	return call(url, HttpMethod.DELETE);
     }
-    
+
     /**
      * Get entire comments for the specific order.
      * @param orderId
@@ -749,12 +713,12 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject getOrderComments(Integer orderId) throws GengoException
     {
-    	String url = this.getBaseUrl() + "translate/order/";
-    	url += orderId;
-    	url += "/comments";
-    	return call(url, HttpMethod.GET);
+        String url = this.getBaseUrl() + "translate/order/";
+        url += orderId;
+        url += "/comments";
+        return call(url, HttpMethod.GET);
     }
-    
+
     /**
      * Register comment for the specific order.
      * @param orderId
@@ -764,21 +728,20 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject postOrderComment(Integer orderId, String comment) throws GengoException
     {
-    	try
-    	{
-	    	String url = this.getBaseUrl() + "translate/order/";
-	    	url += orderId;
-	    	url += "/comment";
-	    	JSONObject data = new JSONObject();
-	    	data.put("body", comment);
-	    	return call(url, HttpMethod.POST, data);
-    	} catch (JSONException x)
-    	{
-    		throw new GengoException(x.getMessage(), x);
-    	}
-    	
+        try
+        {
+            String url = this.getBaseUrl() + "translate/order/";
+            url += orderId;
+            url += "/comment";
+            JSONObject data = new JSONObject();
+            data.put("body", comment);
+            return call(url, HttpMethod.POST, data);
+        } catch (JSONException x)
+        {
+            throw new GengoException(x.getMessage(), x);
+        }
     }
-    
+
     /**
      * Get glossary list.
      * @return
@@ -786,10 +749,10 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject getGlossaryList() throws GengoException
     {
-    	String url = this.getBaseUrl() + "translate/glossary";
-    	return call(url, HttpMethod.GET);
+        String url = this.getBaseUrl() + "translate/glossary";
+        return call(url, HttpMethod.GET);
     }
-    
+
     /**
      * Get the specific glossary.
      * @param glossaryId
@@ -798,11 +761,11 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject getGlossary(Integer glossaryId) throws GengoException
     {
-    	String url = this.getBaseUrl() + "translate/glossary/";
-    	url += glossaryId;
-    	return call(url, HttpMethod.GET);
+        String url = this.getBaseUrl() + "translate/glossary/";
+        url += glossaryId;
+        return call(url, HttpMethod.GET);
     }
-    
+
     /**
      * Get a quote for file jobs.
      * @param jobs Translation job objects to be quoted
@@ -852,6 +815,4 @@ public class GengoClient extends JsonHttpApi
         }
         return oBuilder.toString();
     }
-
-
 }
