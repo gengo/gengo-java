@@ -23,8 +23,8 @@ import com.gengo.client.enums.RejectReason;
 import com.gengo.client.enums.Tier;
 
 public class TestClient {
-	private static String API_KEY_PUBLIC  = "gxWygl}6})(_i=D9VS8HCx~~any[Vy(GTh|zctR]W66}UV-k(I_[s_2uyhmEbfq{";
-	private static String API_KEY_PRIVATE = "vZixx6QOOcCvR{68qF_LAILxh$WoJ(_3v5c[p~=gXeQA3Wsd)rBSrIv9JSo~X9~f";
+	private static String API_KEY_PUBLIC  = ApiKeys.PUBLIC_KEY;
+	private static String API_KEY_PRIVATE = ApiKeys.PRIVATE_KEY;
 	
 	private GengoClient gc;
 	private String sessionHash;
@@ -40,9 +40,6 @@ public class TestClient {
 				break;
 			case SANDBOX:
 				this.gc = new GengoClient(API_KEY_PUBLIC, API_KEY_PRIVATE, true);
-				break;
-			case STAGING:
-				this.gc = new GengoClient(API_KEY_PUBLIC, API_KEY_PRIVATE, false, true);
 				break;
 			default:
 				throw new IllegalArgumentException("level is missing.");
@@ -214,80 +211,6 @@ public class TestClient {
 			System.out.println(x.getMessage());
 		}
 		System.out.println("[testJobs] end@" + this.sessionHash);
-	}
-	
-	public void testJobsUpdate(Boolean verbose, List<Integer> job_ids) {
-		System.out.println("[testJobsUpdate] start@" + this.sessionHash);
-		JSONObject response;
-		// Jobs(PUT) approve
-		try	{
-			System.out.println("Jobs::(PUT) approve");
-			List<Approval> jobs_approval = new ArrayList<Approval>();
-			for (Integer i = 0; i < job_ids.size(); i++) {
-				jobs_approval.add(
-						new Approval(
-								job_ids.get(i),
-								"Test feedback for translator.",
-								"Test feedback for Gengo.",
-								false, Rating.THREE_STARS, Rating.FOUR_STARS, Rating.THREE_STARS)
-						);
-			}
-			response = this.gc.approveTranslationJobs(jobs_approval);
-			System.out.println("[OK]");
-			System.out.println(verbose ? response.toString() : "");
-		} catch (GengoException x) {
-			System.out.print("[NG]");
-			System.out.println(x.getMessage());
-		}
-		// Jobs(PUT) reject
-		try	{
-			System.out.println("Jobs::(PUT) reject");
-			List<Rejection> jobs_reject= new ArrayList<Rejection>();
-			for (Integer i = 0; i < job_ids.size(); i++) {
-				jobs_reject.add(
-						new Rejection(
-								job_ids.get(i),
-								RejectReason.OTHER,
-								"Rejection test via API.",
-								"", false)
-						);
-			}
-			response = this.gc.rejectTranslationJobs(jobs_reject);
-			System.out.print("[OK]");
-			System.out.println(verbose ? response.toString() : "");
-		} catch (GengoException x) {
-			System.out.print("[NG]");
-			System.out.println(x.getMessage());
-		}
-		// Jobs(PUT) revise
-		try	{
-			System.out.println("Jobs::(PUT) revise");
-			HashMap<Integer, String> jobs_revise = new HashMap<Integer, String>();
-			for (Integer i = 0; i < job_ids.size(); i++) {
-				jobs_revise.put(job_ids.get(i), "Revising test via API.");
-			}
-			response = this.gc.reviseTranslationJobs(jobs_revise);
-			System.out.print("[OK]");
-			System.out.println(verbose ? response.toString() : "");
-		} catch (GengoException x) {
-			System.out.print("[NG]");
-			System.out.println(x.getMessage());
-		}
-		// Jobs(PUT) archive
-		try	{
-			System.out.println("Jobs::(PUT) reject");
-			List<Integer> jobs_archive= new ArrayList<Integer>();
-			for (Integer i = 0; i < job_ids.size(); i++) {
-				jobs_archive.add(job_ids.get(i));
-			}
-			response = this.gc.archiveTranslationJobs(jobs_archive);
-			System.out.print("[OK]");
-			System.out.println(verbose ? response.toString() : "");
-		} catch (GengoException x) {
-			System.out.print("[NG]");
-			System.out.println(x.getMessage());
-		}
-		System.out.println("[testJobsUpdate] end@" + this.sessionHash);
 	}
 	
 	/**
@@ -556,13 +479,16 @@ public class TestClient {
 	}
 	
 	public static void main(String[] args) throws GengoException {
-		TestClient tc = new TestClient(ApiServiceLevel.STAGING);
-		//tc.testAccount(true);
+		TestClient tc = new TestClient(ApiServiceLevel.STANDARD);
+		//JSONObject response;
+		tc.testAccount(true);
 		//tc.testService(false);
 		//tc.testJobs(true);
-		//List<Integer> jobs  = Arrays.asList(17784224);
-		//tc.testJobsUpdate(true, jobs);
-		//JSONObject response;
+		//[begin] Jobs revised test.
+		//HashMap<Integer, String> jobs_revision = new HashMap<Integer, String>();
+		//jobs_revision.put(17782185, "revision comment");
+		//response = tc.gc.reviseTranslationJobs(jobs_revision);
+		//[end] Jobs revised test.
 		//[begin] Jobs approved test.
 		//List<Approval> jobs_approval = new ArrayList<Approval>();
 		//jobs_approval.add(new Approval(17784225, "API test feedback.", "API test feedback.", false, Rating.FOUR_STARS, Rating.THREE_STARS, Rating.TWO_STARS));
@@ -572,30 +498,29 @@ public class TestClient {
 		//JSONObject response = tc.gc.archiveTranslationJobs(Arrays.asList(17784225));
 		//[end] Jobs archived test.
 		//[begin] Jobs rejected test.
-//		List<Rejection> jobs_reject = new ArrayList<Rejection>();
-//		jobs_reject.add(new Rejection(17784226 , RejectReason.OTHER, "API reject test.", "BLTZ", false));
-//		try {
-//			response = tc.gc.rejectTranslationJobs(jobs_reject);
-//			System.out.println(response.toString());
-//		} catch (GengoException x) {
-//			System.out.println(x.getMessage());
-//		}
+		//List<Rejection> jobs_reject = new ArrayList<Rejection>();
+		//jobs_reject.add(new Rejection(17784226 , RejectReason.OTHER, "API reject test.", "BLTZ", false));
+		//try {
+		//	response = tc.gc.rejectTranslationJobs(jobs_reject);
+		//	System.out.println(response.toString());
+		//} catch (GengoException x) {
+		//	System.out.println(x.getMessage());
+		//}
 		//[end] Jobs rejected test.
-		//[begin] Job approved test.
+		//[begin] Job revised test.
 		//response = tc.gc.reviseTranslationJob(17784224, "API reviseing test.");
-		//[end] Job approved test.
+		//[end] Job revised test.
 		//[begin] Job reject test.
 		//response = tc.gc.rejectTranslationJob(17784224, RejectReason.QUALITY, "API rejection test.", "RKPX", false);
 		//[end] Job reject test.
 		//[begin] Job approved test.
 		//response = tc.gc.approveTranslationJob(17784224, Rating.THREE_STARS, Rating.FIVE_STARS, Rating.ONE_STAR, "Test comment for translator.", "Test comment for gengo.", false);
 		//[end] Job approved test.
-		//System.out.println(response.toString());
 		//tc.testJob(false);
 		// Order functionalities cannot be tested automatically because API method to enumerate orders is missing. 
 		//tc.testOrder(false, 1699675);
 		//response = tc.gc.deleteTranslationOrder(1699685);
-		//System.out.println(response.toString());
 		//tc.testGlossary(true);
+		//System.out.println(response.toString());
 	}
 }
