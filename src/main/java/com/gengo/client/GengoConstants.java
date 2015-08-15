@@ -10,5 +10,4 @@ package com.gengo.client;
 public final class GengoConstants {
 	protected static String BASE_URL_STANDARD = "http://api.gengo.com/v2/";
 	protected static String BASE_URL_SANDBOX = "http://api.sandbox.gengo.com/v2/";
-	protected static String BASE_URL_STAGING = "http://api.staging.gengo.com/v2/";
 }
