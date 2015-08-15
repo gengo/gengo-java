@@ -39,7 +39,6 @@ public class GengoClient extends JsonHttpApi
     public static final String MYGENGO_FALSE = "0";
 
     private boolean flagUseSandbox;
-    private boolean flagUseStaging;
 //    private String baseUrl = STANDARD_BASE_URL;
 
     /**
@@ -50,7 +49,7 @@ public class GengoClient extends JsonHttpApi
     public GengoClient(String publicKey, String privateKey)
     {
 //        this(publicKey, privateKey, false);
-    	this(publicKey, privateKey, false, false);
+    	this(publicKey, privateKey, false);
     }
 
     /**
@@ -61,22 +60,8 @@ public class GengoClient extends JsonHttpApi
      */
     public GengoClient(String publicKey, String privateKey, boolean useSandbox)
     {
-//        super(publicKey, privateKey);
-//        setUseSandbox(useSandbox);
-    	this(publicKey, privateKey, useSandbox, false);
-    }
-    
-    /**
-     * Initialize the client with all options.
-     * @param publicKey your Gengo.com API key (public key)
-     * @param privateKey your Gengo.com API key (private key)
-     * @param useSandbox true to use the sandbox service, false to use staging or live service.
-     * @param useStaging true to use the staging service, false to use sandbox or live service.
-     */
-    public GengoClient(String publicKey, String privateKey, boolean useSandbox, boolean useStaging) {
     	super(publicKey, privateKey);
     	this.flagUseSandbox = useSandbox;
-    	this.flagUseStaging = useStaging;
     }
     
     /**
@@ -86,8 +71,6 @@ public class GengoClient extends JsonHttpApi
     private String getBaseUrl() {
     	if (this.flagUseSandbox) {
     		return GengoConstants.BASE_URL_SANDBOX;
-    	} else if (this.flagUseStaging) {
-    		return GengoConstants.BASE_URL_STAGING;
     	} else {
     		return GengoConstants.BASE_URL_STANDARD;
     	}
