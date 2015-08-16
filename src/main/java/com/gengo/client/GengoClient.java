@@ -126,7 +126,7 @@ public class GengoClient extends JsonHttpApi
             JSONObject rsp = call(url, HttpMethod.POST, data);
             return rsp;
         }
-        catch (JSONException x)
+        catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -152,7 +152,7 @@ public class GengoClient extends JsonHttpApi
             JSONObject rsp = call(url, HttpMethod.POST, data);
             return rsp;
         }
-        catch (JSONException x)
+        catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -175,7 +175,7 @@ public class GengoClient extends JsonHttpApi
             data.put("action", "revise");
             data.put("comment", comments);
             return call(url, HttpMethod.PUT, data);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -220,7 +220,7 @@ public class GengoClient extends JsonHttpApi
             }
             data.put("public", feedbackIsPublic ? MYGENGO_TRUE : MYGENGO_FALSE);
             return call(url, HttpMethod.PUT, data);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -306,7 +306,7 @@ public class GengoClient extends JsonHttpApi
             data.put("captcha", captcha);
             data.put("follow_up", requeue ? "requeue" : "cancel");
             return call(url, HttpMethod.PUT, data);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -328,7 +328,7 @@ public class GengoClient extends JsonHttpApi
             data.put("action", "archive");
             // Todo: Archive functionality parameters are not documented.
             return call(url, HttpMethod.PUT, data);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -386,21 +386,21 @@ public class GengoClient extends JsonHttpApi
         if (status != null) {
             try {
                 data.put("status", status);
-            } catch (JSONException x) {
+            } catch (JSONException e) {
                 throw new GengoException(x.getMessage(), x);
             }
         }
         if (timestampAfter != null && timestampAfter > 0) {
             try {
                 data.put("timestamp_after", timestampAfter);
-            } catch (JSONException x) {
+            } catch (JSONException e) {
                 throw new GengoException(x.getMessage(), x);
             }
         }
         if (count != null && count > 0) {
             try {
                 data.put("count", count);
-            } catch (JSONException x) {
+            } catch (JSONException e) {
                 throw new GengoException(x.getMessage(), x);
             }
         }
@@ -431,7 +431,7 @@ public class GengoClient extends JsonHttpApi
             //[end] Generate 'job_ids' parameter.
             data.put("job_ids", job_ids);
             return call(url, HttpMethod.PUT, data);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -456,7 +456,7 @@ public class GengoClient extends JsonHttpApi
             }
             data.put("job_ids", iJobs);
             return call(url, HttpMethod.PUT, data);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -481,7 +481,7 @@ public class GengoClient extends JsonHttpApi
             }
             data.put("job_ids", iJobs);
             return call(url, HttpMethod.PUT, data);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -501,7 +501,7 @@ public class GengoClient extends JsonHttpApi
             data.put("action", "archive");
             data.put("job_ids", jobs);
             return call(url, HttpMethod.PUT, data);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -524,7 +524,7 @@ public class GengoClient extends JsonHttpApi
             data.put("body", comment);
             return call(url, HttpMethod.POST, data);
         }
-        catch (JSONException x)
+        catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -630,7 +630,7 @@ public class GengoClient extends JsonHttpApi
             data.put("lc_src", sourceLanguageCode);
             return call(url, HttpMethod.GET, data);
         }
-        catch (JSONException x)
+        catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -652,7 +652,7 @@ public class GengoClient extends JsonHttpApi
                 _jobs.put(iJob.toJSONObject());
             }
             return call(url, HttpMethod.POST, data);
-        } catch (JSONException x) {
+        } catch (JSONException e) {
             throw new GengoException(x.getMessage(), x);
         }
     }
@@ -672,7 +672,7 @@ public class GengoClient extends JsonHttpApi
             JSONObject data = new JSONObject();
             data.put("jobs", jobs.toJSONArray());
             return call(url, HttpMethod.POST, data);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -736,7 +736,7 @@ public class GengoClient extends JsonHttpApi
             JSONObject data = new JSONObject();
             data.put("body", comment);
             return call(url, HttpMethod.POST, data);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }
@@ -792,7 +792,7 @@ public class GengoClient extends JsonHttpApi
             JSONObject data = new JSONObject();
             data.put("jobs", theJobs);
             return httpPostFileUpload(url, data, filePaths);
-        } catch (JSONException x)
+        } catch (JSONException e)
         {
             throw new GengoException(x.getMessage(), x);
         }

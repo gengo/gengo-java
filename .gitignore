@@ -3,4 +3,3 @@
 *.jar
 org/*
 target/*
-/target/
