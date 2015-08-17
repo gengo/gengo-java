@@ -62,7 +62,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG] ");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Balance(GET)
         System.out.println("Account::Balance(GET)");
@@ -72,7 +72,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG] ");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Preferred translators(GET)
         System.out.println("Account::PreferredTranslators(GET)");
@@ -82,7 +82,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG] ");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         System.out.println("[testAccount] end@" + this.sessionHash);
     }
@@ -102,7 +102,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Languages(GET)
         System.out.println("Service::Languages(GET)");
@@ -112,7 +112,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Quote(POST)
         System.out.println("Service::Quote(POST)");
@@ -127,7 +127,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         System.out.println("[testService] end@" + this.sessionHash);
     }
@@ -152,7 +152,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Jobs(POST) multiple
         try {
@@ -168,7 +168,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Jobs(GET)
         try {
@@ -178,7 +178,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Jobs(GET) by id
         Integer[] jobs_get = null;
@@ -189,7 +189,7 @@ public class TestClient {
             }
         } catch (JSONException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
         }
         try {
             System.out.println("Jobs::(GET) by id");
@@ -198,7 +198,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Jobs(GET) by status and limit 5
         try {
@@ -208,7 +208,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         System.out.println("[testJobs] end@" + this.sessionHash);
     }
@@ -227,9 +227,9 @@ public class TestClient {
             response = this.gc.getTranslationJobs();
             job_id = response.getJSONArray("response").getJSONObject(0).getInt("job_id");
         } catch (JSONException e) {
-            System.out.println("[Skipped] Preparation failed. " + x.getMessage());
+            System.out.println("[Skipped] Preparation failed. " + e.getMessage());
         } catch (GengoException e) {
-            System.out.println("[Skipped] Preparation failed. " + x.getMessage());
+            System.out.println("[Skipped] Preparation failed. " + e.getMessage());
         }
         // Job(GET)
         System.out.println("Job::(GET)");
@@ -241,10 +241,10 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (JSONException e) {
                 System.out.print("[Skipped]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped] No job.");
@@ -258,7 +258,7 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped] No jobs can be modified.");
@@ -274,7 +274,7 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped] No jobs can be modified.");
@@ -289,7 +289,7 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped] No jobs can be modified.");
@@ -304,7 +304,7 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped]");
@@ -319,10 +319,10 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (JSONException e) {
                 System.out.print("[Skipped]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped] No jobs can be modified.");
@@ -336,7 +336,7 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped]");
@@ -350,7 +350,7 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped]");
@@ -364,7 +364,7 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped]");
@@ -378,7 +378,7 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped]");
@@ -403,7 +403,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Order:: Comment(POST)
         System.out.println("Order:: Comment(POST)");
@@ -413,7 +413,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Order:: Comments(GET)
         System.out.println("Order:: Comments(GET)");
@@ -423,7 +423,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Order::(DELETE)
         System.out.println("Order::(DELETE)");
@@ -433,7 +433,7 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         System.out.println("[testOrder] end@" + this.sessionHash);
     }
@@ -456,10 +456,10 @@ public class TestClient {
             System.out.println(verbose ? response.toString() : "");
         } catch (JSONException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         } catch (GengoException e) {
             System.out.print("[NG]");
-            System.out.println(x.getMessage());
+            System.out.println(e.getMessage());
         }
         // Glossary (GET)
         System.out.println("Glossary::(GET)");
@@ -470,7 +470,7 @@ public class TestClient {
                 System.out.println(verbose ? response.toString() : "");
             } catch (GengoException e) {
                 System.out.print("[NG]");
-                System.out.println(x.getMessage());
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("[Skipped]");
@@ -504,7 +504,7 @@ public class TestClient {
         // response = tc.gc.rejectTranslationJobs(jobs_reject);
         // System.out.println(response.toString());
         //} catch (GengoException e) {
-        // System.out.println(x.getMessage());
+        // System.out.println(e.getMessage());
         //}
         //[end] Jobs rejected test.
         //[begin] Job revised test.

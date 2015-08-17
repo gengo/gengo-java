@@ -128,7 +128,7 @@ public class GengoClient extends JsonHttpApi
         }
         catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -154,7 +154,7 @@ public class GengoClient extends JsonHttpApi
         }
         catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -177,7 +177,7 @@ public class GengoClient extends JsonHttpApi
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -222,7 +222,7 @@ public class GengoClient extends JsonHttpApi
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -308,7 +308,7 @@ public class GengoClient extends JsonHttpApi
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -330,7 +330,7 @@ public class GengoClient extends JsonHttpApi
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -387,21 +387,21 @@ public class GengoClient extends JsonHttpApi
             try {
                 data.put("status", status);
             } catch (JSONException e) {
-                throw new GengoException(x.getMessage(), x);
+                throw new GengoException(e.getMessage(), e);
             }
         }
         if (timestampAfter != null && timestampAfter > 0) {
             try {
                 data.put("timestamp_after", timestampAfter);
             } catch (JSONException e) {
-                throw new GengoException(x.getMessage(), x);
+                throw new GengoException(e.getMessage(), e);
             }
         }
         if (count != null && count > 0) {
             try {
                 data.put("count", count);
             } catch (JSONException e) {
-                throw new GengoException(x.getMessage(), x);
+                throw new GengoException(e.getMessage(), e);
             }
         }
         return call(url, HttpMethod.GET, data);
@@ -433,7 +433,7 @@ public class GengoClient extends JsonHttpApi
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -458,7 +458,7 @@ public class GengoClient extends JsonHttpApi
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -483,7 +483,7 @@ public class GengoClient extends JsonHttpApi
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -503,7 +503,7 @@ public class GengoClient extends JsonHttpApi
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -526,7 +526,7 @@ public class GengoClient extends JsonHttpApi
         }
         catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -632,7 +632,7 @@ public class GengoClient extends JsonHttpApi
         }
         catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -653,7 +653,7 @@ public class GengoClient extends JsonHttpApi
             }
             return call(url, HttpMethod.POST, data);
         } catch (JSONException e) {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -674,7 +674,7 @@ public class GengoClient extends JsonHttpApi
             return call(url, HttpMethod.POST, data);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -738,7 +738,7 @@ public class GengoClient extends JsonHttpApi
             return call(url, HttpMethod.POST, data);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
@@ -794,7 +794,7 @@ public class GengoClient extends JsonHttpApi
             return httpPostFileUpload(url, data, filePaths);
         } catch (JSONException e)
         {
-            throw new GengoException(x.getMessage(), x);
+            throw new GengoException(e.getMessage(), e);
         }
     }
 
