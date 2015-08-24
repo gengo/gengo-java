@@ -406,8 +406,8 @@ public class GengoClient extends JsonHttpApi
     }
 
     /**
-     * Set revision comment for each jobs.
-     * @param jobs each Entry consists of job ID and comment text
+     * Revise jobs with revision comment.
+     * @param HashMap instance which consists of job ID and comment text
      * @throws GengoException
      */
     public JSONObject reviseTranslationJobs(HashMap<Integer, String> jobs) throws GengoException
@@ -447,8 +447,8 @@ public class GengoClient extends JsonHttpApi
             JSONObject data = new JSONObject();
             data.put("action", "approve");
             JSONArray iJobs = new JSONArray();
-            for (int i = 0; i < jobs.size(); i++) {
-                iJobs.put(jobs.get(i).toJSONObject());
+            for (Approval job : jobs) {
+                iJobs.put(job.toJSONObject());
             }
             data.put("job_ids", iJobs);
             return call(url, HttpMethod.PUT, data);
@@ -471,8 +471,8 @@ public class GengoClient extends JsonHttpApi
             JSONObject data = new JSONObject();
             data.put("action", "reject");
             JSONArray iJobs = new JSONArray();
-            for (int i = 0; i < jobs.size(); i++) {
-                iJobs.put(jobs.get(i).toJSONObject());
+            for (Rejection job : jobs) {
+                iJobs.put(job.toJSONObject());
             }
             data.put("job_ids", iJobs);
             return call(url, HttpMethod.PUT, data);
@@ -693,7 +693,7 @@ public class GengoClient extends JsonHttpApi
      * @return
      * @throws GengoException
      */
-    public JSONObject deleteTranslationOrder(Integer orderId) throws GengoException
+    public JSONObject deleteTranslationOrder(int orderId) throws GengoException
     {
     	String url = getBaseUrl() + "translate/order/";
     	url += orderId;
@@ -706,7 +706,7 @@ public class GengoClient extends JsonHttpApi
      * @return
      * @throws GengoException
      */
-    public JSONObject getOrderComments(Integer orderId) throws GengoException
+    public JSONObject getOrderComments(int orderId) throws GengoException
     {
         String url = getBaseUrl() + "translate/order/";
         url += orderId;
@@ -721,7 +721,7 @@ public class GengoClient extends JsonHttpApi
      * @return
      * @throws GengoException
      */
-    public JSONObject postOrderComment(Integer orderId, String comment) throws GengoException
+    public JSONObject postOrderComment(int orderId, String comment) throws GengoException
     {
         try
         {
@@ -754,7 +754,7 @@ public class GengoClient extends JsonHttpApi
      * @return
      * @throws GengoException
      */
-    public JSONObject getGlossary(Integer glossaryId) throws GengoException
+    public JSONObject getGlossary(int glossaryId) throws GengoException
     {
         String url = getBaseUrl() + "translate/glossary/";
         url += glossaryId;
