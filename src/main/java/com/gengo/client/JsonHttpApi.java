@@ -156,6 +156,7 @@ public class JsonHttpApi
         handleData(parameters, data, method);
 
         String queryString = makeQueryString(parameters);
+        //System.out.println(queryString);// for debugging.
         String rsp = sendRequest(method, url, queryString);
 
         JSONObject doc;
@@ -169,6 +170,7 @@ public class JsonHttpApi
                 {
                     error = error.getJSONArray("0").getJSONObject(0);
                 }
+                System.out.println(error.toString());
                 throw new ErrorResponseException(error.getString("msg"), error.getInt("code"));
             }
         }

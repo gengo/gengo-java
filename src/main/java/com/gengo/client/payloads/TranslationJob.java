@@ -33,8 +33,10 @@ public class TranslationJob extends Payload
 	private boolean autoApprove;
 	private String customData;	
 	private String position;
-	private String glossaryId;
-	private String maxChar;
+	private Integer glossaryId;
+	private Integer maxChar;
+	private String tone;
+	private String purpose;
 	private String identifier; //use when 
 	
 	/**
@@ -155,23 +157,35 @@ public class TranslationJob extends Payload
 	{
 		this.position = position;
 	}
-	public String getGlossaryId()
+	public Integer getGlossaryId()
 	{
 		return glossaryId;
 	}
-	public void setGlossaryId(String glossaryId)
+	public void setGlossaryId(Integer glossaryId)
 	{
 		this.glossaryId = glossaryId;
 	}
-	public String getMaxChar()
+	public Integer getMaxChar()
 	{
 		return maxChar;
 	}
-	public void setMaxChar(String maxChar)
+	public void setMaxChar(Integer maxChar)
 	{
 		this.maxChar = maxChar;
 	}
-
+	public String getTone()
+	{
+		return this.tone;
+	}
+	public void setTone(String tone) {
+		this.tone = tone;
+	}
+	public String getPurpose() {
+		return this.purpose;
+	}
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
+	}
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -242,13 +256,19 @@ public class TranslationJob extends Payload
 			{
 				job.put("position", this.position);
 			}
-			if (!isNullOrEmpty(this.glossaryId))
+			if (this.glossaryId != null)
 			{
 				job.put("glossary_id", this.glossaryId);
 			}
-			if (!isNullOrEmpty(this.maxChar))
+			if (this.maxChar != null)
 			{
-				job.put("max_char", this.maxChar);
+				job.put("max_chars", this.maxChar);
+			}
+			if (!this.isNullOrEmpty(this.tone)) {
+				job.put("tone", this.tone);
+			}
+			if (!this.isNullOrEmpty(this.purpose)) {
+				job.put("purpose", this.purpose);
 			}
 			if (!isNullOrEmpty(this.identifier))
 			{
