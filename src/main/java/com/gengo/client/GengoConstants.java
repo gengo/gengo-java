@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.gengo.client;
 
 /**
@@ -8,6 +5,6 @@ package com.gengo.client;
  *
  */
 public final class GengoConstants {
-	protected static String BASE_URL_STANDARD = "https://api.gengo.com/v2/";
-	protected static String BASE_URL_SANDBOX = "http://api.sandbox.gengo.com/v2/";
+	static String BASE_URL_STANDARD = "https://api.staging.gengo.com/v2/";
+	static String BASE_URL_SANDBOX = "http://api.sandbox.gengo.com/v2/";
 }
