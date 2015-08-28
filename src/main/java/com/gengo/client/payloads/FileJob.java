@@ -33,6 +33,7 @@ public class FileJob extends Payload
     private String customData;
     private String tone;
     private String purpose;
+    private Integer glossaryId = null;
     
     private String identifier;
 
@@ -162,6 +163,12 @@ public class FileJob extends Payload
     public void setPurpose(String purpose) {
     	this.purpose = purpose;
     }
+    public int getGlossaryId() {
+    	return this.glossaryId;
+    }
+    public void setGlossaryId(int glossaryId) {
+    	this.glossaryId = glossaryId;
+    }
     public String getIdentifier() {
     	return identifier;
     }
@@ -226,6 +233,9 @@ public class FileJob extends Payload
 			}
 			if (!this.isNullOrEmpty(this.purpose)) {
 				job.put("purpose", this.purpose);
+			}
+			if (this.glossaryId != null) {
+				job.put("glossary_id", this.glossaryId);
 			}
 			if (!isNullOrEmpty(this.identifier))
 			{
