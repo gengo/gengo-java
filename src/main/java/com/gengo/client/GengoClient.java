@@ -412,6 +412,17 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject reviseTranslationJobs(HashMap<Integer, String> jobs) throws GengoException
     {
+        return reviseTranslationJobs(jobs, null);
+    }
+
+    /**
+     * Revise jobs with revision comment.
+     * @param HashMap instance which consists of job ID and comment text
+     * @param String comment for all jobs
+     * @throws GengoException
+     */
+    public JSONObject reviseTranslationJobs(HashMap<Integer, String> jobs, String comment) throws GengoException
+    {
         try
         {
             String url = getBaseUrl() + "translate/jobs";
@@ -427,6 +438,9 @@ public class GengoClient extends JsonHttpApi
             }
             // [end] Generate 'job_ids' parameter.
             data.put("job_ids", job_ids);
+            if (comment != null) {
+            	data.put("comment", comment);
+            }
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
@@ -465,6 +479,17 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject rejectTranslationJobs(List<Rejection> jobs) throws GengoException
     {
+        return rejectTranslationJobs(jobs, null);
+    }
+
+    /**
+     * Reject jobs with collateral attributes.
+     * @param jobs list of Rejection instance
+     * @param String comment for all jobs
+     * @throws GengoException
+     */
+    public JSONObject rejectTranslationJobs(List<Rejection> jobs, String comment) throws GengoException
+    {
         try
         {
             String url = getBaseUrl() + "translate/jobs";
@@ -475,6 +500,9 @@ public class GengoClient extends JsonHttpApi
                 iJobs.put(job.toJSONObject());
             }
             data.put("job_ids", iJobs);
+            if (comment != null) {
+            	data.put("comment", comment);
+            }
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
