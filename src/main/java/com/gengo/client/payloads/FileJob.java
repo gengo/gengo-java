@@ -15,7 +15,7 @@ public class FileJob extends Payload
     /** Maximum comment length in bytes. */
     public static final int MAX_COMMENT_LENGTH = 1024;
 
-    public static final String FLAG_TRUE = GengoClient.MYGENGO_TRUE;
+    public static final int FLAG_TRUE = GengoClient.GENGO_TRUE;
 
     /* Required fields */
     private String slug;
@@ -34,7 +34,7 @@ public class FileJob extends Payload
     private String tone;
     private String purpose;
     private Integer glossaryId = null;
-    
+
     private String identifier;
 
     /**
@@ -152,100 +152,100 @@ public class FileJob extends Payload
         customData = new String(data);
     }
     public String getTone() {
-    	return this.tone;
+        return this.tone;
     }
     public void setTone(String tone) {
-    	this.tone = tone;
+        this.tone = tone;
     }
     public String getPurpose() {
-    	return this.purpose;
+        return this.purpose;
     }
     public void setPurpose(String purpose) {
-    	this.purpose = purpose;
+        this.purpose = purpose;
     }
     public int getGlossaryId() {
-    	return this.glossaryId;
+        return this.glossaryId;
     }
     public void setGlossaryId(int glossaryId) {
-    	this.glossaryId = glossaryId;
+        this.glossaryId = glossaryId;
     }
     public String getIdentifier() {
-    	return identifier;
+        return identifier;
     }
 
     public void setIdentifier(String identifier) {
-    	this.identifier = identifier;
+        this.identifier = identifier;
     }
 
-	/** Utility method */
+    /** Utility method */
     private boolean isNullOrEmpty(String str)
     {
         return (null == str || str.length() == 0);
     }
 
-	/**
-	 * Create a JSONObject representing this job
-	 * @return the JSONObject created
-	 * @throws GengoException
-	 */
-	public JSONObject toJSONObject() throws GengoException
-	{
-		if (isNullOrEmpty(this.fileKey)) throw new GengoException("Invalid file job - fileKey is required.");
-		if (isNullOrEmpty(this.sourceLanguageCode)) throw new GengoException("Invalid translation job - sourceLanguageCode is required.");
-		if (isNullOrEmpty(this.targetLanguageCode)) throw new GengoException("Invalid translation job - targetLanguageCode is required.");
+    /**
+     * Create a JSONObject representing this job
+     * @return the JSONObject created
+     * @throws GengoException
+     */
+    public JSONObject toJSONObject() throws GengoException
+    {
+        if (isNullOrEmpty(this.fileKey)) throw new GengoException("Invalid file job - fileKey is required.");
+        if (isNullOrEmpty(this.sourceLanguageCode)) throw new GengoException("Invalid translation job - sourceLanguageCode is required.");
+        if (isNullOrEmpty(this.targetLanguageCode)) throw new GengoException("Invalid translation job - targetLanguageCode is required.");
 
-		JSONObject job = new JSONObject();
-		try
-		{
-			job.put("file_key", this.fileKey);
-			job.put("type", "file");
-			job.put("lc_src", this.sourceLanguageCode);
-			job.put("lc_tgt", this.targetLanguageCode);
-			job.put("tier", this.tier.toString().toLowerCase());
-			job.put("slug", this.slug);
+        JSONObject job = new JSONObject();
+        try
+        {
+            job.put("file_key", this.fileKey);
+            job.put("type", "file");
+            job.put("lc_src", this.sourceLanguageCode);
+            job.put("lc_tgt", this.targetLanguageCode);
+            job.put("tier", this.tier.toString().toLowerCase());
+            job.put("slug", this.slug);
 
-			if (this.forceNewTranslation)
-			{
-				job.put("force", FLAG_TRUE);
-			}
-			if (!isNullOrEmpty(comment))
-			{
-				job.put("comment", this.comment);
-			}
-			if (this.usePreferredTranslators)
-			{
-				job.put("use_preferred", FLAG_TRUE);
-			}
-			if (!isNullOrEmpty(this.callbackUrl))
-			{
-				job.put("callback_url", this.callbackUrl);
-			}
-			if (this.autoApprove)
-			{
-				job.put("auto_approve", FLAG_TRUE);
-			}
-			if (null != this.customData && this.customData.length() > 0)
-			{
-				job.put("custom_data", this.customData);
-			}
-			if (!this.isNullOrEmpty(this.tone)) {
-				job.put("tone", this.tone);
-			}
-			if (!this.isNullOrEmpty(this.purpose)) {
-				job.put("purpose", this.purpose);
-			}
-			if (this.glossaryId != null) {
-				job.put("glossary_id", this.glossaryId);
-			}
-			if (!isNullOrEmpty(this.identifier))
-			{
-				job.put("identifier", this.identifier);
-			}
-		}
-		catch (JSONException e)
-		{
-			throw new GengoException("Could not create JSONObject for FileJob", e);
-		}
-		return job;
-	}
+            if (this.forceNewTranslation)
+            {
+                job.put("force", FLAG_TRUE);
+            }
+            if (!isNullOrEmpty(comment))
+            {
+                job.put("comment", this.comment);
+            }
+            if (this.usePreferredTranslators)
+            {
+                job.put("use_preferred", FLAG_TRUE);
+            }
+            if (!isNullOrEmpty(this.callbackUrl))
+            {
+                job.put("callback_url", this.callbackUrl);
+            }
+            if (this.autoApprove)
+            {
+                job.put("auto_approve", FLAG_TRUE);
+            }
+            if (null != this.customData && this.customData.length() > 0)
+            {
+                job.put("custom_data", this.customData);
+            }
+            if (!this.isNullOrEmpty(this.tone)) {
+                job.put("tone", this.tone);
+            }
+            if (!this.isNullOrEmpty(this.purpose)) {
+                job.put("purpose", this.purpose);
+            }
+            if (this.glossaryId != null) {
+                job.put("glossary_id", this.glossaryId);
+            }
+            if (!isNullOrEmpty(this.identifier))
+            {
+                job.put("identifier", this.identifier);
+            }
+        }
+        catch (JSONException e)
+        {
+            throw new GengoException("Could not create JSONObject for FileJob", e);
+        }
+        return job;
+    }
 }

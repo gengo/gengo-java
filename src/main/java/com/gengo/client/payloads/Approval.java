@@ -78,7 +78,7 @@ public class Approval extends JobUpdate
         {
             id.put("for_translator", feedbackTranslator);
             id.put("for_mygengo", feedbackGengo);
-            id.put("public", isFeedbackPublic ? GengoClient.MYGENGO_TRUE : GengoClient.MYGENGO_FALSE);
+            id.put("public", isFeedbackPublic ? GengoClient.GENGO_TRUE : GengoClient.GENGO_FALSE);
             if (ratingTime != null) {
                 id.put("rating_time", ratingTime.toString());
             }

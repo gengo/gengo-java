@@ -32,8 +32,8 @@ import com.gengo.client.payloads.Rejection;
 public class GengoClient extends JsonHttpApi
 {
     /** Strings used to represent TRUE and FALSE in requests */
-    public static final String MYGENGO_TRUE = "1";
-    public static final String MYGENGO_FALSE = "0";
+    public static final int GENGO_TRUE = 1;
+    public static final int GENGO_FALSE = 0;
 
     final private boolean usesSandbox;
 
@@ -121,7 +121,7 @@ public class GengoClient extends JsonHttpApi
             @SuppressWarnings({ "rawtypes", "unchecked" })
             List<Payload> p = (List)jobs;
             data.put("jobs", (new Payloads(p)).toJSONArray());
-            data.put("as_group", processAsGroup ? MYGENGO_TRUE : MYGENGO_FALSE);
+            data.put("as_group", processAsGroup ? GENGO_TRUE : GENGO_FALSE);
             JSONObject rsp = call(url, HttpMethod.POST, data);
             return rsp;
         }
@@ -217,7 +217,7 @@ public class GengoClient extends JsonHttpApi
             if (ratingResponse != null) {
                 data.put("rating_response", ratingResponse.toString());
             }
-            data.put("public", feedbackIsPublic ? MYGENGO_TRUE : MYGENGO_FALSE);
+            data.put("public", feedbackIsPublic ? GENGO_TRUE : GENGO_FALSE);
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
         {
@@ -439,7 +439,7 @@ public class GengoClient extends JsonHttpApi
             // [end] Generate 'job_ids' parameter.
             data.put("job_ids", job_ids);
             if (comment != null) {
-            	data.put("comment", comment);
+                data.put("comment", comment);
             }
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
@@ -501,7 +501,7 @@ public class GengoClient extends JsonHttpApi
             }
             data.put("job_ids", iJobs);
             if (comment != null) {
-            	data.put("comment", comment);
+                data.put("comment", comment);
             }
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
@@ -723,9 +723,9 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject deleteTranslationOrder(int orderId) throws GengoException
     {
-    	String url = getBaseUrl() + "translate/order/";
-    	url += orderId;
-    	return call(url, HttpMethod.DELETE);
+        String url = getBaseUrl() + "translate/order/";
+        url += orderId;
+        return call(url, HttpMethod.DELETE);
     }
 
     /**
