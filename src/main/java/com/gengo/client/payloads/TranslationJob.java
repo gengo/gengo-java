@@ -15,7 +15,7 @@ public class TranslationJob extends Payload
     /** Maximum comment length in bytes. */
     public static final int MAX_COMMENT_LENGTH = 1024;
 
-    public static final int FLAG_TRUE = GengoClient.MYGENGO_TRUE;
+    public static final int FLAG_TRUE = GengoClient.GENGO_TRUE;
 
     /* Required fields */
     private String slug;
