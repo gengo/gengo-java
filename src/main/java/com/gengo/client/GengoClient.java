@@ -32,8 +32,8 @@ import com.gengo.client.payloads.Rejection;
 public class GengoClient extends JsonHttpApi
 {
     /** Strings used to represent TRUE and FALSE in requests */
-    public static final String MYGENGO_TRUE = "1";
-    public static final String MYGENGO_FALSE = "0";
+    public static final int MYGENGO_TRUE = 1;
+    public static final int MYGENGO_FALSE = 0;
 
     final private boolean usesSandbox;
 
@@ -439,7 +439,7 @@ public class GengoClient extends JsonHttpApi
             // [end] Generate 'job_ids' parameter.
             data.put("job_ids", job_ids);
             if (comment != null) {
-            	data.put("comment", comment);
+                data.put("comment", comment);
             }
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
@@ -501,7 +501,7 @@ public class GengoClient extends JsonHttpApi
             }
             data.put("job_ids", iJobs);
             if (comment != null) {
-            	data.put("comment", comment);
+                data.put("comment", comment);
             }
             return call(url, HttpMethod.PUT, data);
         } catch (JSONException e)
@@ -723,9 +723,9 @@ public class GengoClient extends JsonHttpApi
      */
     public JSONObject deleteTranslationOrder(int orderId) throws GengoException
     {
-    	String url = getBaseUrl() + "translate/order/";
-    	url += orderId;
-    	return call(url, HttpMethod.DELETE);
+        String url = getBaseUrl() + "translate/order/";
+        url += orderId;
+        return call(url, HttpMethod.DELETE);
     }
 
     /**
