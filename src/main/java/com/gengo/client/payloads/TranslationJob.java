@@ -3,6 +3,9 @@ package com.gengo.client.payloads;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import com.gengo.client.GengoClient;
 import com.gengo.client.enums.Tier;
 import com.gengo.client.exceptions.GengoException;
@@ -38,6 +41,7 @@ public class TranslationJob extends Payload
     private String tone;
     private String purpose;
     private String identifier; //use when
+    private List<Attachment> attachments;
 
     /**
      * Create a translation job.
@@ -54,6 +58,7 @@ public class TranslationJob extends Payload
         this.sourceLanguageCode = sourceLanguageCode;
         this.targetLanguageCode = targetLanguageCode;
         this.tier = tier;
+        this.attachments = new ArrayList<Attachment>();
     }
 
     /* Getters and setters */
@@ -202,9 +207,15 @@ public class TranslationJob extends Payload
         this.type = type;
     }
 
+    public List<Attachment> getAttachments() {
+        return this.attachments;
+    }
+    public void addAttachment(Attachment attachment) {
+        this.attachments.add(attachment);
+    }
+
     /** Utility method */
-    private boolean isNullOrEmpty(String str)
-    {
+    private boolean isNullOrEmpty(String str) {
         return (null == str || str.length() == 0);
     }
 
@@ -228,40 +239,31 @@ public class TranslationJob extends Payload
             job.put("tier", this.tier.toString().toLowerCase());
             job.put("slug", this.slug);
 
-            if (this.forceNewTranslation)
-            {
+            if (this.forceNewTranslation) {
                 job.put("force", FLAG_TRUE);
             }
-            if (!isNullOrEmpty(comment))
-            {
+            if (!isNullOrEmpty(comment)) {
                 job.put("comment", this.comment);
             }
-            if (this.usePreferredTranslators)
-            {
+            if (this.usePreferredTranslators) {
                 job.put("use_preferred", FLAG_TRUE);
             }
-            if (!isNullOrEmpty(this.callbackUrl))
-            {
+            if (!isNullOrEmpty(this.callbackUrl)) {
                 job.put("callback_url", this.callbackUrl);
             }
-            if (this.autoApprove)
-            {
+            if (this.autoApprove) {
                 job.put("auto_approve", FLAG_TRUE);
             }
-            if (null != this.customData && this.customData.length() > 0)
-            {
+            if (null != this.customData && this.customData.length() > 0) {
                 job.put("custom_data", this.customData);
             }
-            if (!isNullOrEmpty(this.position))
-            {
+            if (!isNullOrEmpty(this.position)) {
                 job.put("position", this.position);
             }
-            if (this.glossaryId != null)
-            {
+            if (this.glossaryId != null) {
                 job.put("glossary_id", this.glossaryId);
             }
-            if (this.maxChar != null)
-            {
+            if (this.maxChar != null) {
                 job.put("max_chars", this.maxChar);
             }
             if (!this.isNullOrEmpty(this.tone)) {
@@ -270,19 +272,20 @@ public class TranslationJob extends Payload
             if (!this.isNullOrEmpty(this.purpose)) {
                 job.put("purpose", this.purpose);
             }
-            if (!isNullOrEmpty(this.identifier))
-            {
+            if (!isNullOrEmpty(this.identifier)) {
                 job.put("identifier", this.identifier);
             }
-            if (!isNullOrEmpty(this.type))
-            {
+            if (!isNullOrEmpty(this.type)) {
                 job.put("type", this.type);
             }
+            for (Attachment attach : this.attachments) {
+                job.append("attachments", attach.toJSONObject());
+            }
         }
-        catch (JSONException e)
-        {
+        catch (JSONException e) {
             throw new GengoException("Could not create JSONObject for TranslationJob", e);
         }
+
         return job;
     }
 }

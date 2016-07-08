@@ -33,6 +33,8 @@ public class JobsTest {
         List<TranslationJob> jobList = new ArrayList<TranslationJob>();
         TranslationJob job = new TranslationJob("java client test", "This is a short story.", "en", "ja", Tier.STANDARD);
         TranslationJob job2 = new TranslationJob("java client test 2", "This is another short story.", "en", "ja", Tier.STANDARD);
+        job.setPosition("1");
+        job2.setPosition("2");
         job.setForceNewTranslation(true);
         job2.setForceNewTranslation(true);
         jobList.add(job);
@@ -56,7 +58,7 @@ public class JobsTest {
         Assert.assertEquals(getOrderResp.getString("opstat"), "ok");
         Assert.assertTrue(getOrderResp.has("response"));
         JSONObject getOrderResponse = getOrderResp.getJSONObject("response");
-        String jobId = getOrderResponse.getJSONObject("order").getJSONArray("jobs_available").getString(1);
+        String jobId = getOrderResponse.getJSONObject("order").getJSONArray("jobs_available").getString(0);
 
         // GET job
         JSONObject getJobResp = Gengo.getTranslationJob(Integer.parseInt(jobId));
