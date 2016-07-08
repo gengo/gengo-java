@@ -15,17 +15,17 @@ import com.gengo.client.payloads.TranslationJob;
 /* Basic runnable example */
 public class GettingStarted {
 
-    private GengoClient Gengo;
+    private GengoClient gengo;
 
     public GettingStarted() throws GengoException
     {
-        Gengo = new GengoClient(ApiKeys.PUBLIC_KEY, ApiKeys.PRIVATE_KEY, true);
+        this.gengo = new GengoClient(ApiKeys.PUBLIC_KEY, ApiKeys.PRIVATE_KEY, true);
     }
 
     public void test() throws GengoException, JSONException
     {
         // retrieve account balance
-        JSONObject response = Gengo.getAccountBalance();
+        JSONObject response = this.gengo.getAccountBalance();
         System.out.println(response);
 
         // prepare jobs payload
@@ -36,7 +36,7 @@ public class GettingStarted {
         jobList.add(new TranslationJob("short story body", "There once was a man from Nantucket.","en","es",Tier.STANDARD));
 
         // send request
-        response = Gengo.postTranslationJobs(jobList, true);
+        response = this.gengo.postTranslationJobs(jobList, true);
         System.out.println(response.toString(2));
     }
 
